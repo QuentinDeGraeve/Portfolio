@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4f2">
+  <meta name="description" content="Étude de cas : Space Dodge — développement d'un jeu mobile avec Unity. Par Quentin De Graeve.">
+  <title>04 — Space Dodge / Quentin De Graeve</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/page-projet.css">
+</head>
+<body>
+<div class="site-root">
+
+  <!-- Nav -->
+  <nav class="page-nav" aria-label="Navigation page projet">
+    <div class="wrap">
+      <a class="page-nav-back" href="../index.html#projets"><span class="arrow">←</span> Retour aux projets</a>
+      <span class="page-nav-brand">Carnet d'ingénierie</span>
+      <span class="page-nav-num">Étude 04 / 04</span>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- Hero -->
+    <section class="proj-hero">
+      <div class="wrap proj-hero-inner">
+        <div>
+          <div class="proj-eyebrow"><span class="proj-eyebrow-line"></span> Développement créatif · Prototype personnel</div>
+          <h1>Space Dodge :<br>apprendre par <em>le jeu.</em></h1>
+          <p class="proj-hero-desc">Un jeu spatial développé avec Unity — pensé comme un terrain d'expérimentation pour les contrôles, les effets visuels, la physique et la sauvegarde sur Android.</p>
+        </div>
+        <div class="proj-meta-block">
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Statut</span>
+            <span class="proj-meta-value">Prototype en développement</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Domaine</span>
+            <span class="proj-meta-value">Jeu &amp; création</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Technologies</span>
+            <div class="proj-tags">
+              <span class="proj-tag">Unity</span>
+              <span class="proj-tag">C#</span>
+              <span class="proj-tag">Input System</span>
+              <span class="proj-tag">Android</span>
+              <span class="proj-tag">JSON</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Illustration -->
+    <div class="proj-art-full" aria-label="Illustration du jeu Space Dodge">
+      <svg viewBox="0 0 1000 300" role="img" aria-label="Jeu d'esquive spatial avec vaisseau et obstacles">
+        <defs><pattern id="spaceGrid2" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0 H0 V28" fill="none" stroke="#2a3e34" stroke-opacity=".14"/></pattern></defs>
+        <rect width="1000" height="300" fill="url(#spaceGrid2)"/>
+        <!-- Étoiles -->
+        <g fill="#2e4438" opacity=".55">
+          <circle cx="72" cy="58" r="2.2"/><circle cx="190" cy="220" r="2"/><circle cx="340" cy="44" r="1.8"/>
+          <circle cx="480" cy="228" r="2.5"/><circle cx="620" cy="36" r="1.6"/><circle cx="730" cy="240" r="2"/>
+          <circle cx="860" cy="60" r="2.3"/><circle cx="940" cy="200" r="1.8"/><circle cx="560" cy="110" r="1.5"/>
+          <circle cx="100" cy="160" r="1.7"/><circle cx="800" cy="130" r="1.4"/>
+        </g>
+        <!-- Trajectoires -->
+        <g fill="none" stroke="#3a6b54" stroke-width="1.4">
+          <path d="M50 250 Q200 90 380 160 T750 80" stroke-dasharray="4 8"/>
+          <path d="M30 80 Q200 190 380 100 T950 220" stroke-dasharray="6 8"/>
+        </g>
+        <!-- Vaisseau -->
+        <g transform="translate(440 95) rotate(20 60 70)" stroke="#1a2b20" stroke-width="2" stroke-linejoin="round">
+          <path d="M60 8 L92 82 L72 74 L60 102 L48 74 L28 82 Z" fill="#f5f4f2"/>
+          <path d="M60 28 L72 72 L60 64 L48 72 Z" fill="#1f5c3e"/>
+          <path d="M48 74 L22 94 L36 60 M72 74 L98 94 L84 60" fill="#5a9478"/>
+          <path d="M52 98 L60 122 L68 98" fill="#1f5c3e"/>
+        </g>
+        <!-- Obstacles -->
+        <g fill="none" stroke="#1f5c3e" stroke-width="2">
+          <circle cx="188" cy="110" r="26"/><circle cx="188" cy="110" r="38" stroke-dasharray="3 5"/>
+          <circle cx="780" cy="185" r="36"/><circle cx="780" cy="185" r="50" stroke-dasharray="4 6"/>
+        </g>
+        <!-- Labels -->
+        <g fill="#2e4438" font-family="monospace" font-size="11">
+          <text x="38" y="28">DODGE / 01</text>
+          <text x="160" y="78">OBSTACLE</text>
+          <text x="752" y="152">OBSTACLE</text>
+          <text x="420" y="244">PLAYER</text>
+          <text x="820" y="280">SCORE : ???</text>
+        </g>
+        <!-- Panel HUD -->
+        <g transform="translate(820 28)" stroke="#2a3e34" fill="none" stroke-width="1.4">
+          <path d="M0 0 H160 V54 H0 Z"/>
+          <path d="M12 16 H148 M12 28 H124 M12 40 H140"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Corps -->
+    <div class="proj-body">
+      <div class="wrap proj-body-grid">
+
+        <aside class="proj-sidebar">
+          <nav aria-label="Sections de l'étude">
+            <p class="proj-sidebar-title">Sommaire</p>
+            <a href="#probleme">Le problème</a>
+            <a href="#scenes">Architecture des scènes</a>
+            <a href="#entrees">Gestion des entrées</a>
+            <a href="#score">Score &amp; sauvegarde</a>
+            <a href="#mobile">Pipeline mobile</a>
+            <a href="#limites">Limites</a>
+          </nav>
+        </aside>
+
+        <article class="proj-content">
+          <span class="proj-status">Prototype personnel en développement</span>
+
+          <h2 id="probleme">Le problème</h2>
+          <p>Développer un jeu, même simple, oblige à relier des systèmes qui s'ignorent habituellement : les entrées utilisateur, la physique, le rendu visuel, l'audio, la progression et la persistance. Une mécanique qui fonctionne en isolation peut créer des bugs inattendus quand tout interagit en même temps.</p>
+          <p>Space Dodge est un terrain d'expérimentation intentionnel — l'objectif n'est pas le jeu fini, c'est <strong>de comprendre Unity par la pratique</strong> en touchant à chacun de ces systèmes.</p>
+
+          <h2 id="scenes">Architecture des scènes</h2>
+          <p>La fiche couvrira la structure en scènes Unity choisie :</p>
+          <ul>
+            <li><strong>Menu principal</strong> — gestion du GameManager, chargement de la scène de jeu</li>
+            <li><strong>Scène de jeu</strong> — boucle principale, spawn des obstacles, gestion de la fin de partie</li>
+            <li><strong>Game Over</strong> — affichage du score, accès aux meilleurs scores, retour au menu</li>
+          </ul>
+          <p>La communication entre scènes (score, états) passe par un singleton GameManager persistant entre les chargements.</p>
+
+          <h2 id="entrees">Gestion des entrées</h2>
+          <p>L'Input System de Unity (nouveau système, pas le Legacy) gère les contrôles — clavier sur desktop, touch sur Android. La fiche documentera les <strong>Input Actions</strong> configurées et la gestion des différences de comportement entre les deux plateformes.</p>
+          <p>Un problème spécifique à documenter : la dead zone sur les axes tactiles et la gestion du multi-touch non intentionnel.</p>
+
+          <h2 id="score">Score &amp; sauvegarde</h2>
+          <p>Le système de score est progressif (distance parcourue + obstacles évités). La sauvegarde utilise <strong>JSON + PlayerPrefs</strong> pour les meilleurs scores locaux. La fiche comparera cette approche à ScriptableObjects pour la persistance des données de jeu.</p>
+
+          <h2 id="mobile">Pipeline mobile Android</h2>
+          <p>La chaîne de build Android via Unity nécessite :</p>
+          <ul>
+            <li>Configuration du module Android dans Unity Hub</li>
+            <li>Keystore pour la signature de l'APK</li>
+            <li>Réglage des paramètres graphiques (tier de qualité, résolution adaptative)</li>
+            <li>Test sur appareil physique via ADB</li>
+          </ul>
+          <p>Des captures réelles du jeu en cours et les corrections apportées aux effets visuels Android viendront remplacer cette illustration de travail.</p>
+
+          <h2 id="limites">Limites</h2>
+          <p>Un prototype personnel implique des compromis assumés : pas de tests automatisés (Unity Test Framework non utilisé), gestion mémoire basique (pas de pool d'objets pour les obstacles), effets visuels désactivés sur les appareils de bas de gamme. Ces choix seront documentés et justifiés.</p>
+        </article>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span><strong>QD/</strong> — Quentin De Graeve</span>
+      <span>Étude 04 / Space Dodge</span>
+      <a class="back-top" href="../index.html#projets">← Tous les projets</a>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

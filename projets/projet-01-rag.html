@@ -1,0 +1,24 @@
+<article class="project-card featured reveal" data-categories="ia backend" data-page="projets/page-01-rag.html">
+  <div class="project-art" style="background:#dde4e0">
+    <span class="art-stamp">Étude 01 / IA</span><span class="art-no">01</span>
+    <svg viewBox="0 0 660 285" role="img" aria-label="Schéma de recherche augmentée avec documents, index vectoriel et modèle de langage">
+      <defs><pattern id="ragDots" width="13" height="13" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#1d3028" opacity=".24"/></pattern></defs>
+      <rect width="660" height="285" fill="url(#ragDots)"/>
+      <g stroke="#1d3028" stroke-width="1.5" fill="none"><path d="M132 129 H205"/><path d="M288 129 H357"/><path d="M444 129 H516"/><path d="M190 124 l15 5 -15 5 M342 124 l15 5 -15 5 M501 124 l15 5 -15 5"/></g>
+      <g transform="translate(32 75)"><rect width="100" height="112" fill="#f5f4f2" stroke="#1d3028" stroke-width="1.5"/><path d="M65 0 V29 H100" fill="#d0cdc7" stroke="#1d3028"/><path d="M16 43 H80 M16 55 H72 M16 67 H79 M16 79 H62" stroke="#6a8f82" stroke-width="4"/><text x="0" y="132" font-family="monospace" font-size="10" fill="#1d3028">DOCS / INPUT</text></g>
+      <g transform="translate(208 77)"><rect width="80" height="105" fill="#1f5c3e" stroke="#1d3028" stroke-width="1.5"/><g fill="none" stroke="#f5f4f2" stroke-width="1.5"><circle cx="25" cy="28" r="8"/><circle cx="54" cy="28" r="8"/><circle cx="40" cy="57" r="8"/><path d="M31 33 L36 50 M48 33 L44 50 M33 28 H46"/></g><text x="-4" y="125" font-family="monospace" font-size="10" fill="#1d3028">CHUNK + EMBED</text></g>
+      <g transform="translate(359 73)"><rect width="85" height="112" fill="#f5f4f2" stroke="#1d3028" stroke-width="1.5"/><g fill="#6a8f82"><rect x="12" y="14" width="23" height="23"/><rect x="43" y="14" width="28" height="23"/><rect x="12" y="44" width="31" height="23"/><rect x="49" y="44" width="22" height="23"/><rect x="12" y="74" width="23" height="23"/><rect x="41" y="74" width="30" height="23"/></g><text x="-2" y="132" font-family="monospace" font-size="10" fill="#1d3028">VECTOR SEARCH</text></g>
+      <g transform="translate(519 80)"><rect width="107" height="99" fill="#1d3028" stroke="#1d3028" stroke-width="1.5"/><path d="M13 17 H94 M13 29 H80 M13 41 H89" stroke="#4a8068" stroke-width="4"/><path d="M13 61 H94 M13 73 H66 M13 85 H82" stroke="#3dbd7a" stroke-width="4"/><text x="8" y="118" font-family="monospace" font-size="10" fill="#1d3028">LLM / ANSWER</text></g>
+      <g font-family="monospace" font-size="10" fill="#1d3028"><text x="34" y="35">KNOWLEDGE</text><text x="240" y="35">RETRIEVE</text><text x="372" y="35">RANK</text><text x="540" y="35">GENERATE</text><text x="32" y="252">SOURCE</text><text x="206" y="252">CONTEXT</text><text x="361" y="252">EVIDENCE</text><text x="525" y="252">GROUNDED RESPONSE</text></g>
+      <path d="M35 264 H627" stroke="#1d3028" stroke-opacity=".25" stroke-dasharray="3 4"/>
+    </svg>
+  </div>
+  <div class="project-info">
+    <div class="project-meta"><span>01 — IA appliquée</span><span>Architecture & qualité</span></div>
+    <h3>Faire répondre l'IA avec des preuves.</h3>
+    <p>Explorer une architecture RAG qui retrouve le bon contexte, cite ses sources et sait reconnaître quand l'information manque.</p>
+    <div class="tags"><span class="tag">RAG</span><span class="tag">Embeddings</span><span class="tag">Évaluation</span><span class="tag">Garde-fous</span></div>
+    <button class="project-open" aria-expanded="false"><span>Lire l'étude de cas</span><span>↗</span></button>
+    <div class="project-detail" hidden><span class="status">Piste de réalisation / à documenter</span><br><strong>Le problème.</strong> Une réponse fluide n'est pas forcément exacte. Le système doit retrouver des éléments pertinents, les transmettre au modèle et rendre l'origine de la réponse vérifiable.<br><br><strong>Ce que la fiche détaillera.</strong> Pipeline d'ingestion, stratégie de découpage, recherche, citations, tests sur un jeu de questions et limites observées. Les métriques seront ajoutées après mesure, pas estimées.</div>
+  </div>
+</article>

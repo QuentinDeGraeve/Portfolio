@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4f2">
+  <meta name="description" content="Étude de cas : PiDog — du son au mouvement, une chaîne vocale locale sur robot quadrupède. Par Quentin De Graeve.">
+  <title>02 — PiDog / Quentin De Graeve</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/page-projet.css">
+</head>
+<body>
+<div class="site-root">
+
+  <!-- Nav -->
+  <nav class="page-nav" aria-label="Navigation page projet">
+    <div class="wrap">
+      <a class="page-nav-back" href="../index.html#projets"><span class="arrow">←</span> Retour aux projets</a>
+      <span class="page-nav-brand">Carnet d'ingénierie</span>
+      <span class="page-nav-num">Étude 02 / 04</span>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- Hero -->
+    <section class="proj-hero">
+      <div class="wrap proj-hero-inner">
+        <div>
+          <div class="proj-eyebrow"><span class="proj-eyebrow-line"></span> Robotique · Prototype personnel</div>
+          <h1>PiDog,<br>du son au <em>mouvement.</em></h1>
+          <p class="proj-hero-desc">Assembler une chaîne vocale locale et la relier à un robot physique : microphone, reconnaissance de la parole, décision, synthèse vocale et action — sans cloud.</p>
+        </div>
+        <div class="proj-meta-block">
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Statut</span>
+            <span class="proj-meta-value">Prototype en évolution</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Domaine</span>
+            <span class="proj-meta-value">Robotique &amp; Edge IA</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Technologies</span>
+            <div class="proj-tags">
+              <span class="proj-tag">Raspberry Pi</span>
+              <span class="proj-tag">Python</span>
+              <span class="proj-tag">Vosk</span>
+              <span class="proj-tag">TTS</span>
+              <span class="proj-tag">Ollama</span>
+              <span class="proj-tag">PiDog SDK</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Illustration -->
+    <div class="proj-art-full" aria-label="Illustration du robot PiDog">
+      <svg viewBox="0 0 900 300" role="img" aria-label="Robot quadrupède avec chaîne voix-décision-mouvement">
+        <defs><pattern id="dogGrid2" width="18" height="18" patternUnits="userSpaceOnUse"><path d="M18 0 H0 V18" fill="none" stroke="#2a3e2c" stroke-opacity=".13"/></pattern></defs>
+        <rect width="900" height="300" fill="url(#dogGrid2)"/>
+        <g fill="none" stroke="#1e3021" stroke-width="1" stroke-dasharray="4 4" opacity=".5">
+          <circle cx="450" cy="148" r="120"/><circle cx="450" cy="148" r="88"/><path d="M450 20 V278 M322 148 H578"/>
+        </g>
+        <!-- Corps robot -->
+        <g stroke="#1a2b1c" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M355 110 L390 90 L510 94 L550 122 L530 165 L395 168 L348 148 Z" fill="#9db09a"/>
+          <path d="M510 96 L552 80 L590 92 L600 125 L558 142 L535 125 Z" fill="#e2e8de"/>
+          <path d="M570 84 L573 66 L592 68 L598 90" fill="#b3c4ae"/>
+          <circle cx="580" cy="103" r="6" fill="#1f5c3e" stroke="none"/>
+          <!-- Pattes -->
+          <path d="M382 162 L370 210 L345 228 L320 218 L328 203 L350 196 L350 158" fill="#728c6e"/>
+          <path d="M416 165 L422 214 L447 228 L468 218 L462 202 L443 197 L441 162" fill="#728c6e"/>
+          <path d="M500 157 L514 205 L540 220 L558 210 L553 196 L534 192 L528 150" fill="#728c6e"/>
+          <path d="M538 138 L566 158 L576 190 L598 200 L612 188 L602 174 L588 174 L574 136" fill="#728c6e"/>
+          <!-- Tête / capteur -->
+          <rect x="388" y="115" width="72" height="42" rx="2" fill="#f5f4f2"/>
+          <path d="M398 126 H450 M398 135 H440 M398 144 H446" stroke="#6a8a66" stroke-width="3"/>
+          <circle cx="380" cy="137" r="8" fill="#1f5c3e"/>
+          <circle cx="508" cy="154" r="7" fill="#1f5c3e"/>
+        </g>
+        <!-- Annotations -->
+        <g fill="#1e3021" font-family="monospace" font-size="11">
+          <text x="60" y="54">MIC / VOICE</text><text x="60" y="70" opacity=".6">STT → INTENT</text>
+          <text x="60" y="200">LOCAL LLM</text><text x="60" y="216" opacity=".6">OLLAMA / EDGE</text>
+          <text x="692" y="54">SERVO / ACT</text><text x="692" y="70" opacity=".6">FEEDBACK</text>
+          <text x="692" y="200">TTS / VOICE</text><text x="692" y="216" opacity=".6">RÉPONSE</text>
+        </g>
+        <!-- Connecteurs -->
+        <g fill="none" stroke="#1f5c3e" stroke-width="1.5">
+          <path d="M155 62 L200 62 L375 122"/>
+          <path d="M155 192 L200 192 L374 148"/>
+          <path d="M688 62 L654 62 L574 118"/>
+          <path d="M688 192 L660 192 L600 170"/>
+        </g>
+        <g fill="#1f5c3e">
+          <circle cx="375" cy="122" r="3"/><circle cx="374" cy="148" r="3"/>
+          <circle cx="574" cy="118" r="3"/><circle cx="600" cy="170" r="3"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Corps -->
+    <div class="proj-body">
+      <div class="wrap proj-body-grid">
+
+        <aside class="proj-sidebar">
+          <nav aria-label="Sections de l'étude">
+            <p class="proj-sidebar-title">Sommaire</p>
+            <a href="#probleme">Le problème</a>
+            <a href="#chaine">La chaîne vocale</a>
+            <a href="#decision">Décision locale</a>
+            <a href="#mouvement">Mouvement</a>
+            <a href="#limites">Limites</a>
+          </nav>
+        </aside>
+
+        <article class="proj-content">
+          <span class="proj-status">Prototype personnel en évolution</span>
+
+          <h2 id="probleme">Le problème</h2>
+          <p>Une commande vocale utile dépend autant de la qualité du micro et de la détection de la parole que du modèle de langage. La plupart des approches grand public délèguent tout au cloud — et tombent en panne sans réseau ou avec une connexion lente.</p>
+          <p>L'objectif ici est de construire une chaîne complète qui tourne <strong>entièrement en local sur un Raspberry Pi</strong> : de la capture audio jusqu'au mouvement du robot, sans requête externe.</p>
+
+          <h2 id="chaine">La chaîne vocale</h2>
+          <p>La capture audio est la première étape critique. Les faux déclenchements (bruits de fond interprétés comme des commandes) sont le principal problème à résoudre avant d'aller plus loin.</p>
+          <ul>
+            <li><strong>Capture</strong> — microphone USB ou intégré, seuil d'activation par niveau sonore (VAD)</li>
+            <li><strong>Reconnaissance</strong> — Vosk pour la transcription hors ligne, modèle français léger adapté au Pi</li>
+            <li><strong>Intention</strong> — correspondance entre la transcription et un catalogue de commandes connues</li>
+          </ul>
+          <p>La fiche détaillera les paramètres VAD retenus, le taux de faux déclenchements mesuré et la latence de transcription réelle sur le matériel.</p>
+
+          <h2 id="decision">Décision locale</h2>
+          <p>Pour les commandes ambiguës ou les questions ouvertes, un modèle de langage léger tourne via <strong>Ollama</strong> sur le Pi. La réponse générée est ensuite convertie en texte parlé (TTS) et diffusée par le haut-parleur du robot.</p>
+          <p>Le choix du modèle (taille vs latence) et les garde-fous avant transmission d'un ordre au système de mouvement seront documentés avec les mesures réelles.</p>
+
+          <h2 id="mouvement">Mouvement &amp; feedback</h2>
+          <p>Le SDK PiDog expose les primitives de mouvement (avancer, reculer, tourner, asseoir). La fiche couvrira :</p>
+          <ul>
+            <li>Mapping intention → commande SDK</li>
+            <li>Validation de l'état courant avant exécution (robot en position stable ?)</li>
+            <li>Feedback audio après exécution de la commande</li>
+            <li>Gestion des erreurs servomoteur</li>
+          </ul>
+
+          <h2 id="limites">Limites connues</h2>
+          <p>La puissance de calcul du Raspberry Pi 4 impose des compromis sévères : modèle LLM limité à ~3B paramètres quantifiés, latence de réponse de plusieurs secondes pour les requêtes au LLM, et taux de reconnaissance vocale dépendant fortement des conditions acoustiques.</p>
+          <p>Des photos et mesures réelles du prototype viendront compléter cette fiche à l'avancement.</p>
+        </article>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span><strong>QD/</strong> — Quentin De Graeve</span>
+      <span>Étude 02 / PiDog</span>
+      <a class="back-top" href="../index.html#projets">← Tous les projets</a>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4f2">
+  <meta name="description" content="Étude de cas : API Spring Boot — de la conception au déploiement cloud. Par Quentin De Graeve.">
+  <title>03 — API Cloud / Quentin De Graeve</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/page-projet.css">
+</head>
+<body>
+<div class="site-root">
+
+  <!-- Nav -->
+  <nav class="page-nav" aria-label="Navigation page projet">
+    <div class="wrap">
+      <a class="page-nav-back" href="../index.html#projets"><span class="arrow">←</span> Retour aux projets</a>
+      <span class="page-nav-brand">Carnet d'ingénierie</span>
+      <span class="page-nav-num">Étude 03 / 04</span>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- Hero -->
+    <section class="proj-hero">
+      <div class="wrap proj-hero-inner">
+        <div>
+          <div class="proj-eyebrow"><span class="proj-eyebrow-line"></span> Backend / Cloud · Architecture de référence</div>
+          <h1>Une API, de la conception<br>au <em>déploiement.</em></h1>
+          <p class="proj-hero-desc">Un cas de référence pour détailler une API Spring Boot — sécurité, tests, conteneur, pipeline CI/CD et exploitation sur AWS. Chaque couche documentée, chaque décision justifiée.</p>
+        </div>
+        <div class="proj-meta-block">
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Statut</span>
+            <span class="proj-meta-value">Architecture à réaliser</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Domaine</span>
+            <span class="proj-meta-value">Backend &amp; Cloud</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Technologies</span>
+            <div class="proj-tags">
+              <span class="proj-tag">Java</span>
+              <span class="proj-tag">Spring Boot</span>
+              <span class="proj-tag">Docker</span>
+              <span class="proj-tag">AWS</span>
+              <span class="proj-tag">Terraform</span>
+              <span class="proj-tag">CI/CD</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Illustration -->
+    <div class="proj-art-full" aria-label="Architecture cloud backend">
+      <svg viewBox="0 0 1000 300" role="img" aria-label="Pipeline : client, services, observabilité">
+        <g fill="none" stroke="#2e4838" stroke-width="1" opacity=".35">
+          <path d="M20 40 H980 M20 60 H980 M20 80 H980 M20 100 H980 M20 120 H980 M20 140 H980 M20 160 H980 M20 180 H980 M20 200 H980 M20 220 H980 M20 240 H980 M20 260 H980"/>
+          <path d="M60 20 V280 M120 20 V280 M180 20 V280 M240 20 V280 M300 20 V280 M360 20 V280 M420 20 V280 M480 20 V280 M540 20 V280 M600 20 V280 M660 20 V280 M720 20 V280 M780 20 V280 M840 20 V280 M900 20 V280 M960 20 V280"/>
+        </g>
+        <g stroke="#1e3028" stroke-width="1.5">
+          <rect x="60" y="95" width="160" height="110" fill="#f5f4f2"/>
+          <rect x="390" y="48" width="175" height="72" fill="#f5f4f2"/>
+          <rect x="390" y="148" width="175" height="72" fill="#f5f4f2"/>
+          <rect x="740" y="95" width="160" height="110" fill="#1e3028"/>
+        </g>
+        <!-- Connexions -->
+        <g fill="none" stroke="#1f5c3e" stroke-width="2">
+          <path d="M220 150 H390"/><path d="M477 120 V148"/><path d="M565 184 H740"/>
+          <path d="M212 144 l12 6 -12 6 M472 140 l6 8 6 -8 M730 179 l12 6 -12 6"/>
+        </g>
+        <!-- Contenu boîtes -->
+        <path d="M78 115 H205 M78 132 H188 M78 149 H198 M78 166 H172 M78 183 H192" stroke="#7aaa96" stroke-width="5"/>
+        <path d="M408 66 H548 M408 82 H532 M408 98 H520 M408 166 H548 M408 182 H528 M408 198 H540" stroke="#6a9882" stroke-width="5"/>
+        <path d="M758 115 H880 M758 132 H862 M758 149 H876 M758 166 H855 M758 183 H868" stroke="#dce5e0" stroke-width="5"/>
+        <g fill="#1e3028" font-family="monospace" font-size="11">
+          <text x="62" y="222">CLIENT / API</text>
+          <text x="391" y="36">SERVICE A</text><text x="391" y="238">SERVICE B</text>
+          <text x="742" y="222">OBSERVABILITY</text>
+          <text x="62" y="30">REQUEST</text><text x="820" y="30">DEPLOY</text>
+        </g>
+        <path d="M55 258 H945" stroke="#2e4838" stroke-width="1" stroke-dasharray="3 4"/>
+        <text x="60" y="276" fill="#2e4838" font-family="monospace" font-size="10">TEST → BUILD → SHIP → WATCH</text>
+      </svg>
+    </div>
+
+    <!-- Corps -->
+    <div class="proj-body">
+      <div class="wrap proj-body-grid">
+
+        <aside class="proj-sidebar">
+          <nav aria-label="Sections de l'étude">
+            <p class="proj-sidebar-title">Sommaire</p>
+            <a href="#probleme">Le problème</a>
+            <a href="#code">Structure du code</a>
+            <a href="#tests">Tests &amp; sécurité</a>
+            <a href="#conteneur">Conteneur &amp; CI</a>
+            <a href="#cloud">Déploiement AWS</a>
+            <a href="#limites">Limites</a>
+          </nav>
+        </aside>
+
+        <article class="proj-content">
+          <span class="proj-status">Architecture de démonstration à réaliser</span>
+
+          <h2 id="probleme">Le problème</h2>
+          <p>Une API exploitable ne se limite pas à répondre à une requête. Elle doit être <strong>testable</strong> (on peut vérifier ce qu'elle fait), <strong>sécurisée</strong> (elle rejette ce qu'elle ne devrait pas accepter), <strong>observable</strong> (on sait ce qui se passe en production) et <strong>déployable de manière reproductible</strong> (pas de "ça marchait sur ma machine").</p>
+          <p>Ce projet construit cette API pas à pas, avec une décision documentée à chaque étape.</p>
+
+          <h2 id="code">Structure du code</h2>
+          <p>L'architecture suit un découpage en couches classiques (controller, service, repository) mais avec une attention explicite aux contrats entre couches :</p>
+          <ul>
+            <li><strong>Validation à l'entrée</strong> — Bean Validation sur les DTO, pas de confiance implicite sur les données reçues</li>
+            <li><strong>Séparation domaine / infrastructure</strong> — le cœur métier ne dépend pas du framework</li>
+            <li><strong>Gestion des erreurs</strong> — codes HTTP cohérents, messages d'erreur non verbeux côté client</li>
+          </ul>
+
+          <h2 id="tests">Tests &amp; sécurité</h2>
+          <p>La stratégie de test sera documentée avec les taux de couverture réels :</p>
+          <ul>
+            <li>Tests unitaires sur la logique métier</li>
+            <li>Tests d'intégration avec base de données de test (H2 ou Testcontainers)</li>
+            <li>Tests de contrat sur les endpoints REST</li>
+          </ul>
+          <p>La sécurité couvre : authentification JWT, validation des permissions, protection contre les injections SQL et limitation de débit.</p>
+
+          <h2 id="conteneur">Conteneur &amp; pipeline CI</h2>
+          <p>Le Dockerfile sera optimisé (multi-stage build, image de base minimale, utilisateur non-root). Le pipeline CI — sur GitHub Actions — exécute dans l'ordre : compilation, tests, analyse statique, build image, publication vers le registry.</p>
+          <p>Chaque étape est une porte : si les tests échouent, l'image n'est pas construite.</p>
+
+          <h2 id="cloud">Déploiement AWS</h2>
+          <p>L'infrastructure est décrite en code avec <strong>Terraform</strong>. La cible est ECS Fargate : pas de serveur à gérer, scaling automatique, logs centralisés dans CloudWatch.</p>
+          <ul>
+            <li>VPC avec subnets publics / privés</li>
+            <li>ALB (Application Load Balancer) devant les conteneurs</li>
+            <li>RDS PostgreSQL en subnet privé</li>
+            <li>Secrets Manager pour les variables sensibles</li>
+          </ul>
+
+          <h2 id="limites">Limites</h2>
+          <p>Cette fiche est une architecture de démonstration — le dépôt et l'environnement déployé seront indiqués quand ils seront disponibles. Les coûts AWS réels seront documentés.</p>
+        </article>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span><strong>QD/</strong> — Quentin De Graeve</span>
+      <span>Étude 03 / API Cloud</span>
+      <a class="back-top" href="../index.html#projets">← Tous les projets</a>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

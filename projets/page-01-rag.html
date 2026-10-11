@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4f2">
+  <meta name="description" content="Étude de cas : architecture RAG — faire répondre l'IA avec des preuves. Par Quentin De Graeve.">
+  <title>01 — RAG / Quentin De Graeve</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/page-projet.css">
+</head>
+<body>
+<div class="site-root">
+
+  <!-- Nav -->
+  <nav class="page-nav" aria-label="Navigation page projet">
+    <div class="wrap">
+      <a class="page-nav-back" href="../index.html#projets"><span class="arrow">←</span> Retour aux projets</a>
+      <span class="page-nav-brand">Carnet d'ingénierie</span>
+      <span class="page-nav-num">Étude 01 / 04</span>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- Hero -->
+    <section class="proj-hero">
+      <div class="wrap proj-hero-inner">
+        <div>
+          <div class="proj-eyebrow"><span class="proj-eyebrow-line"></span> IA appliquée · Architecture &amp; qualité</div>
+          <h1>Faire répondre l'IA<br>avec des <em>preuves.</em></h1>
+          <p class="proj-hero-desc">Explorer une architecture RAG qui retrouve le bon contexte, cite ses sources et sait reconnaître quand l'information manque — sans inventer.</p>
+        </div>
+        <div class="proj-meta-block">
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Statut</span>
+            <span class="proj-meta-value">Piste de réalisation</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Domaine</span>
+            <span class="proj-meta-value">IA &amp; données</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Technologies</span>
+            <div class="proj-tags">
+              <span class="proj-tag">RAG</span>
+              <span class="proj-tag">Embeddings</span>
+              <span class="proj-tag">Évaluation</span>
+              <span class="proj-tag">Garde-fous</span>
+              <span class="proj-tag">Python</span>
+              <span class="proj-tag">Ollama</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Illustration -->
+    <div class="proj-art-full" aria-label="Schéma de recherche augmentée">
+      <svg viewBox="0 0 1000 300" role="img" aria-label="Pipeline RAG : documents, découpage, recherche vectorielle, génération">
+        <defs><pattern id="ragDots2" width="13" height="13" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#1d3028" opacity=".18"/></pattern></defs>
+        <rect width="1000" height="300" fill="url(#ragDots2)"/>
+        <g stroke="#1d3028" stroke-width="1.4" fill="none">
+          <path d="M195 150 H270"/><path d="M420 150 H490"/><path d="M640 150 H710"/>
+          <path d="M256 144 l14 6 -14 6 M476 144 l14 6 -14 6 M696 144 l14 6 -14 6"/>
+        </g>
+        <g transform="translate(50 90)"><rect width="145" height="120" fill="#f5f4f2" stroke="#1d3028" stroke-width="1.4"/><path d="M95 0 V35 H145" fill="#d0cdc7" stroke="#1d3028"/><path d="M20 50 H120 M20 65 H104 M20 80 H114 M20 95 H88" stroke="#6a8f82" stroke-width="5"/><text x="0" y="140" font-family="monospace" font-size="11" fill="#1d3028">DOCS / INPUT</text></g>
+        <g transform="translate(273 95)"><rect width="147" height="110" fill="#1f5c3e" stroke="#1d3028" stroke-width="1.4"/><g fill="none" stroke="#f5f4f2" stroke-width="1.8"><circle cx="37" cy="32" r="11"/><circle cx="74" cy="32" r="11"/><circle cx="111" cy="32" r="11"/><circle cx="55" cy="70" r="11"/><circle cx="92" cy="70" r="11"/><path d="M44 38 L50 65 M66 38 L62 65 M47 32 H66 M62 32 H80 M100 32 H119 M84 70 H102"/></g><text x="-8" y="132" font-family="monospace" font-size="11" fill="#1d3028">CHUNK + EMBED</text></g>
+        <g transform="translate(493 88)"><rect width="147" height="124" fill="#f5f4f2" stroke="#1d3028" stroke-width="1.4"/><g fill="#6a8f82"><rect x="16" y="16" width="30" height="28"/><rect x="56" y="16" width="36" height="28"/><rect x="16" y="52" width="40" height="28"/><rect x="64" y="52" width="28" height="28"/><rect x="16" y="88" width="30" height="28"/><rect x="54" y="88" width="38" height="28"/></g><text x="-4" y="144" font-family="monospace" font-size="11" fill="#1d3028">VECTOR SEARCH</text></g>
+        <g transform="translate(713 94)"><rect width="160" height="112" fill="#1d3028" stroke="#1d3028" stroke-width="1.4"/><path d="M18 22 H142 M18 38 H118 M18 54 H132" stroke="#4a8068" stroke-width="5"/><path d="M18 78 H142 M18 94 H98 M18 110 H124" stroke="#3dbd7a" stroke-width="5"/><text x="12" y="133" font-family="monospace" font-size="11" fill="#1d3028">LLM / ANSWER</text></g>
+        <g font-family="monospace" font-size="11" fill="#1d3028">
+          <text x="53" y="48">KNOWLEDGE</text>
+          <text x="310" y="48">RETRIEVE</text>
+          <text x="536" y="46">RANK</text>
+          <text x="742" y="48">GENERATE</text>
+          <text x="52" y="268">SOURCE</text>
+          <text x="274" y="268">CONTEXT</text>
+          <text x="494" y="268">EVIDENCE</text>
+          <text x="716" y="268">GROUNDED RESPONSE</text>
+        </g>
+        <path d="M50 278 H950" stroke="#1d3028" stroke-opacity=".2" stroke-dasharray="3 4"/>
+      </svg>
+    </div>
+
+    <!-- Corps -->
+    <div class="proj-body">
+      <div class="wrap proj-body-grid">
+
+        <!-- Sidebar -->
+        <aside class="proj-sidebar">
+          <nav aria-label="Sections de l'étude">
+            <p class="proj-sidebar-title">Sommaire</p>
+            <a href="#probleme">Le problème</a>
+            <a href="#architecture">Architecture</a>
+            <a href="#pipeline">Pipeline</a>
+            <a href="#garde-fous">Garde-fous</a>
+            <a href="#limites">Limites</a>
+          </nav>
+        </aside>
+
+        <!-- Contenu -->
+        <article class="proj-content">
+          <span class="proj-status">Piste de réalisation / à documenter</span>
+
+          <h2 id="probleme">Le problème</h2>
+          <p>Une réponse fluide n'est pas forcément exacte. Un modèle de langage qui génère sans contrainte invente des sources, confond des dates et présente ses approximations avec la même confiance que ses faits avérés.</p>
+          <p>Le projet explore une architecture <strong>RAG (Retrieval-Augmented Generation)</strong> : le modèle ne répond qu'avec le contexte qu'on lui fournit, les sources sont citées, et le système reconnaît explicitement quand l'information manque plutôt que d'improviser.</p>
+
+          <h2 id="architecture">Architecture</h2>
+          <p>Le système se décompose en deux phases distinctes :</p>
+          <ul>
+            <li><strong>Ingestion</strong> — les documents sont découpés en segments, transformés en vecteurs numériques et indexés dans une base vectorielle.</li>
+            <li><strong>Requête</strong> — la question de l'utilisateur est encodée, les segments les plus proches sont retrouvés, transmis au modèle comme contexte, et la réponse générée cite ses sources.</li>
+          </ul>
+          <p>Chaque étape a des paramètres qui influencent la qualité finale : taille des segments, modèle d'encodage, nombre de résultats retenus, prompt système.</p>
+
+          <h2 id="pipeline">Pipeline d'ingestion</h2>
+          <p>La fiche détaillera : stratégie de découpage (par phrase, par paragraphe, fenêtre glissante), choix du modèle d'embeddings, stockage et mise à jour de l'index. Les compromis entre vitesse d'ingestion et qualité de récupération seront mesurés, pas supposés.</p>
+
+          <h2 id="garde-fous">Garde-fous &amp; évaluation</h2>
+          <p>Rendre l'origine de chaque réponse vérifiable est un impératif, pas une option. La fiche incluera :</p>
+          <ul>
+            <li>Citations avec référence au document source et position dans le texte</li>
+            <li>Seuil de confiance : en dessous d'un score de similarité minimal, le système répond "information non disponible"</li>
+            <li>Jeu de questions de test avec réponses attendues — les métriques (précision, rappel, hallucination rate) seront ajoutées après mesure</li>
+          </ul>
+
+          <h2 id="limites">Limites connues</h2>
+          <p>Un système RAG ne résout pas tout. Les limites à documenter incluent : dépendance à la qualité des documents sources, gestion des questions qui croisent plusieurs documents, latence liée à la double inférence (encodage + génération), et comportement sur des questions hors-domaine.</p>
+          <p>Cette fiche est en cours de construction. Le dépôt et les mesures réelles seront ajoutés à la réalisation du prototype.</p>
+        </article>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span><strong>QD/</strong> — Quentin De Graeve</span>
+      <span>Étude 01 / RAG</span>
+      <a class="back-top" href="../index.html#projets">← Tous les projets</a>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+PORTFOLIO QUENTIN DE GRAEVE — VERSION LOCALE
+
+OUVRIR LE SITE
+1. Décompressez le fichier ZIP dans un dossier de votre choix.
+2. Ouvrez le dossier quentin-portfolio-local.
+3. Double-cliquez sur OUVRIR-LE-SITE.bat.
+4. Une fenêtre de commande s'ouvre et un serveur HTTP local démarre.
+5. Le site s'ouvre automatiquement dans votre navigateur sur http://localhost:8080.
+6. Pour arrêter le serveur, fermez la fenêtre de commande (Ctrl+C ou croix).
+
+POURQUOI UN SERVEUR HTTP EST NÉCESSAIRE
+Les cartes projet sont chargées dynamiquement depuis le dossier projets/.
+Les navigateurs bloquent ce type de chargement quand le site est ouvert
+directement en file:// (erreur CORS / Same-Origin). Le serveur local contourne
+cette restriction sans nécessiter de connexion Internet.
+
+PRÉ-REQUIS
+Python 3 doit être installé sur le poste (https://www.python.org).
+Il est disponible par défaut sur la plupart des postes Windows récents.
+
+PERSONNALISATION
+- Les liens LinkedIn, GitHub et e-mail sont des emplacements à compléter.
+- Remplacez les illustrations provisoires par vos vrais éléments avant publication.
+- N'ajoutez aucune information confidentielle liée à vos projets professionnels.
+
+STRUCTURE
+- index.html          : page principale du site
+- css/style.css       : feuille de style
+- js/main.js          : logique JavaScript (chargement des cartes, menus, filtres)
+- projets/            : fiches HTML de chaque projet (chargées dynamiquement)
+- OUVRIR-LE-SITE.bat  : lance le serveur local et ouvre le navigateur
+
+POUR MODIFIER LE SITE
+Ouvrez les fichiers dans Visual Studio Code ou un autre éditeur de texte,
+modifiez le contenu, enregistrez puis actualisez la page dans le navigateur.
