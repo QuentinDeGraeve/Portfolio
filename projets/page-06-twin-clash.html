@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4f2">
+  <script>
+    (function() {
+      var savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.documentElement.style.colorScheme = savedTheme;
+      }
+    })();
+  </script>
+  <meta name="description" content="The Twin Clash : jeu de combat 2D jouable dans le navigateur, développé avec Phaser 3. Par Quentin De Graeve.">
+  <title>06 — The Twin Clash / Quentin De Graeve</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/page-projet.css">
+</head>
+<body>
+<div class="site-root">
+
+  <!-- Nav -->
+  <nav class="page-nav" aria-label="Navigation page projet">
+    <div class="wrap">
+      <a class="page-nav-back" href="../index.html#projets"><span class="arrow">←</span> Retour aux projets</a>
+      <span class="page-nav-brand">Carnet d'ingénierie</span>
+      <div class="page-nav-right">
+        <span class="page-nav-num">Étude 06 / 06</span>
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Changer le thème" title="Changer le thème">
+          <span class="theme-icon-light" aria-hidden="true">☼</span>
+          <span class="theme-icon-dark" aria-hidden="true">☾</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- Hero -->
+    <section class="proj-hero">
+      <div class="wrap proj-hero-inner">
+        <div>
+          <div class="proj-eyebrow"><span class="proj-eyebrow-line"></span> Jeu web · Phaser 3 · Combat 2D</div>
+          <h1>The Twin Clash,<br>Adèle contre <em>Héloïse.</em></h1>
+          <p class="proj-hero-desc">Un jeu de combat 2D jouable directement dans le navigateur : combos, attaque spéciale, dash, un bot adverse et un mode deux joueurs sur le même clavier.</p>
+          <a class="proj-cta" href="#jouer">Jouer maintenant <span>↓</span></a>
+        </div>
+        <div class="proj-meta-block">
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Statut</span>
+            <span class="proj-meta-value">Jouable · vs bot ou vs joueur</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Plateforme</span>
+            <span class="proj-meta-value">Navigateur · clavier</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Technologies</span>
+            <div class="proj-tags">
+              <span class="proj-tag">Phaser 3</span>
+              <span class="proj-tag">JavaScript ES</span>
+              <span class="proj-tag">Spritesheets</span>
+              <span class="proj-tag">IA de bot</span>
+              <span class="proj-tag">PvP local</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Corps -->
+    <div class="proj-body">
+      <div class="wrap proj-body-grid">
+
+        <aside class="proj-sidebar">
+          <nav aria-label="Sections de l'étude">
+            <p class="proj-sidebar-title">Sommaire</p>
+            <a href="#jouer">Jouer</a>
+            <a href="#commandes">Commandes</a>
+            <a href="#jeu">Le jeu</a>
+            <a href="#bot">Le bot</a>
+            <a href="#code">Organisation du code</a>
+          </nav>
+        </aside>
+
+        <article class="proj-content">
+          <span class="proj-status">Jouable dans la page</span>
+
+          <h2 id="jouer">Jouer</h2>
+          <div class="proj-game">
+            <iframe src="../jeux/TheTwinClash/index.html" title="The Twin Clash — jeu jouable" loading="lazy" allowfullscreen></iframe>
+            <button type="button" class="proj-game-overlay"><span>Cliquer pour activer le jeu et les commandes</span></button>
+          </div>
+          <p>Cliquez sur le jeu pour l'activer et lui donner le focus clavier (tant qu'il n'est pas activé, les flèches font défiler la page), puis choisissez <strong>VS BOT</strong> ou <strong>VS JOUEUR</strong> dans le menu.</p>
+          <a class="proj-cta proj-game-fullscreen" href="../jeux/TheTwinClash/index.html" target="_blank" rel="noopener">Ouvrir le jeu en plein écran <span>↗</span></a>
+
+          <h2 id="commandes">Commandes</h2>
+          <table class="proj-keys">
+            <tr><th>Action</th><th>Joueur 1 (Adèle)</th><th>Joueur 2 (Héloïse)</th></tr>
+            <tr><td>Déplacement</td><td><code>←</code> <code>→</code></td><td><code>Q</code> <code>D</code></td></tr>
+            <tr><td>Sauter / s'accroupir</td><td><code>↑</code> / <code>↓</code></td><td><code>Z</code> / <code>S</code></td></tr>
+            <tr><td>Coup de poing</td><td><code>A</code></td><td><code>T</code></td></tr>
+            <tr><td>Coup de pied</td><td><code>Z</code></td><td><code>Y</code></td></tr>
+            <tr><td>Attaque spéciale (3 s)</td><td><code>E</code></td><td><code>U</code></td></tr>
+            <tr><td>Dash (1 s)</td><td><code>Q</code></td><td><code>H</code></td></tr>
+          </table>
+          <p>En mode VS BOT, seul le joueur 1 est contrôlé.</p>
+
+          <h2 id="jeu">Le jeu</h2>
+          <p>Deux combattantes, <strong>Adèle</strong> et <strong>Héloïse</strong>, s'affrontent dans une arène néon. Une partie dure 90 secondes : on gagne en mettant l'adversaire K.O. ou en ayant le plus de points de vie à la fin du temps.</p>
+          <p>Les coups successifs forment des <strong>combos</strong> qui augmentent les dégâts. L'attaque spéciale frappe plus fort mais a un temps de recharge plus long, et le dash permet d'esquiver. Les personnages sont animés par spritesheets (repos, course, coup, touché, K.O.), avec des effets de particules et des sons à l'impact.</p>
+
+          <h2 id="bot">Le bot</h2>
+          <p>Le bot adverse enchaîne plusieurs comportements : s'approcher, attaquer en combos, lancer une attaque lourde, dasher et esquiver. Le joueur est piloté par une machine à états (repos, course, attaque, étourdi, dash, spécial), partagée avec le bot via une classe <code>Fighter</code> commune.</p>
+
+          <h2 id="code">Organisation du code</h2>
+          <p>Le projet est découpé en modules JavaScript : scènes (<code>Boot</code>, <code>Preload</code>, <code>Menu</code>, <code>Game</code>, <code>Hud</code>, <code>GameOver</code>, <code>GameWin</code>), entités (<code>Fighter</code>, <code>Player</code>, <code>Player2</code>, <code>Bot</code>) et interface (<code>HealthBar</code>).</p>
+        </article>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span><strong>QD/</strong> — Quentin De Graeve</span>
+      <span>Étude 06 / The Twin Clash</span>
+      <a class="back-top" href="../index.html#projets">← Tous les projets</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  (function() {
+    document.querySelectorAll('.proj-game-overlay').forEach(function (overlay) {
+      overlay.addEventListener('click', function () {
+        var game = overlay.parentElement;
+        game.classList.add('is-active');
+        game.querySelector('iframe').focus();
+      });
+    });
+    var themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', function () {
+        var currentTheme = document.documentElement.style.colorScheme || 'light dark';
+        var activeTheme;
+        if (currentTheme === 'light') {
+          activeTheme = 'light';
+        } else if (currentTheme === 'dark') {
+          activeTheme = 'dark';
+        } else {
+          activeTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        var nextTheme = activeTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.style.colorScheme = nextTheme;
+        localStorage.setItem('theme', nextTheme);
+      });
+    }
+  })();
+</script>
+</body>
+</html>

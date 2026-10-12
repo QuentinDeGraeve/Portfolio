@@ -14,7 +14,9 @@
     'projets/projet-01-rag.html',
     'projets/projet-02-pidog.html',
     'projets/projet-03-api-cloud.html',
-    'projets/projet-04-space-dodge.html'
+    'projets/projet-04-space-dodge.html',
+    'projets/projet-05-lander.html',
+    'projets/projet-06-twin-clash.html'
   ];
 
   var grid = document.getElementById('projectGrid');
@@ -159,5 +161,29 @@
       showToast('À configurer avant publication\u00a0: ajoute ton véritable lien ' + label + '.');
     });
   });
+
+  /* ----------------------------------------------------------
+     Bascule de thème (Sombre / Clair)
+  ---------------------------------------------------------- */
+  var themeToggle = document.getElementById('themeToggle');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function () {
+      var currentTheme = document.documentElement.style.colorScheme || 'light dark';
+      var activeTheme;
+
+      if (currentTheme === 'light') {
+        activeTheme = 'light';
+      } else if (currentTheme === 'dark') {
+        activeTheme = 'dark';
+      } else {
+        // Détecte la préférence système en cours
+        activeTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+
+      var nextTheme = activeTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.style.colorScheme = nextTheme;
+      localStorage.setItem('theme', nextTheme);
+    });
+  }
 
 })();

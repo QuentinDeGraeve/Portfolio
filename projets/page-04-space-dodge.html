@@ -4,7 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f4f2">
-  <meta name="description" content="Étude de cas : Space Dodge — développement d'un jeu mobile avec Unity. Par Quentin De Graeve.">
+  <script>
+    (function() {
+      var savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.documentElement.style.colorScheme = savedTheme;
+      }
+    })();
+  </script>
+  <meta name="description" content="Space Dodge : jeu arcade spatial développé avec Unity et C#, version Android. Par Quentin De Graeve.">
   <title>04 — Space Dodge / Quentin De Graeve</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +27,13 @@
     <div class="wrap">
       <a class="page-nav-back" href="../index.html#projets"><span class="arrow">←</span> Retour aux projets</a>
       <span class="page-nav-brand">Carnet d'ingénierie</span>
-      <span class="page-nav-num">Étude 04 / 04</span>
+      <div class="page-nav-right">
+        <span class="page-nav-num">Étude 04 / 06</span>
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Changer le thème" title="Changer le thème">
+          <span class="theme-icon-light" aria-hidden="true">☼</span>
+          <span class="theme-icon-dark" aria-hidden="true">☾</span>
+        </button>
+      </div>
     </div>
   </nav>
 
@@ -29,77 +43,38 @@
     <section class="proj-hero">
       <div class="wrap proj-hero-inner">
         <div>
-          <div class="proj-eyebrow"><span class="proj-eyebrow-line"></span> Développement créatif · Prototype personnel</div>
-          <h1>Space Dodge :<br>apprendre par <em>le jeu.</em></h1>
-          <p class="proj-hero-desc">Un jeu spatial développé avec Unity — pensé comme un terrain d'expérimentation pour les contrôles, les effets visuels, la physique et la sauvegarde sur Android.</p>
+          <img class="proj-icon" src="../images/spacedodge/icone.png" alt="Icône du jeu Space Dodge : un vaisseau rouge vu de face">
+          <div class="proj-eyebrow"><span class="proj-eyebrow-line"></span> Jeu mobile · Unity · Android</div>
+          <h1>Space Dodge,<br>jeu arcade <em>spatial.</em></h1>
+          <p class="proj-hero-desc">Un jeu arcade développé avec Unity et C#, où réflexes et précision sont essentiels pour esquiver les obstacles et survivre le plus longtemps possible. Une version Android est disponible en téléchargement.</p>
+          <a class="proj-cta" href="https://thetwinclash.itch.io/spacedodge" target="_blank" rel="noopener">Télécharger sur itch.io <span>↗</span></a>
         </div>
         <div class="proj-meta-block">
           <div class="proj-meta-item">
             <span class="proj-meta-label">Statut</span>
-            <span class="proj-meta-value">Prototype en développement</span>
+            <span class="proj-meta-value">En développement</span>
           </div>
           <div class="proj-meta-item">
-            <span class="proj-meta-label">Domaine</span>
-            <span class="proj-meta-value">Jeu &amp; création</span>
+            <span class="proj-meta-label">Version publiée</span>
+            <span class="proj-meta-value">V0.0.3 · APK 232 Mo</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Plateforme</span>
+            <span class="proj-meta-value">Android</span>
           </div>
           <div class="proj-meta-item">
             <span class="proj-meta-label">Technologies</span>
             <div class="proj-tags">
-              <span class="proj-tag">Unity</span>
+              <span class="proj-tag">Unity 6</span>
               <span class="proj-tag">C#</span>
-              <span class="proj-tag">Input System</span>
               <span class="proj-tag">Android</span>
-              <span class="proj-tag">JSON</span>
+              <span class="proj-tag">3D</span>
+              <span class="proj-tag">Sci-fi</span>
             </div>
           </div>
         </div>
       </div>
     </section>
-
-    <!-- Illustration -->
-    <div class="proj-art-full" aria-label="Illustration du jeu Space Dodge">
-      <svg viewBox="0 0 1000 300" role="img" aria-label="Jeu d'esquive spatial avec vaisseau et obstacles">
-        <defs><pattern id="spaceGrid2" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0 H0 V28" fill="none" stroke="#2a3e34" stroke-opacity=".14"/></pattern></defs>
-        <rect width="1000" height="300" fill="url(#spaceGrid2)"/>
-        <!-- Étoiles -->
-        <g fill="#2e4438" opacity=".55">
-          <circle cx="72" cy="58" r="2.2"/><circle cx="190" cy="220" r="2"/><circle cx="340" cy="44" r="1.8"/>
-          <circle cx="480" cy="228" r="2.5"/><circle cx="620" cy="36" r="1.6"/><circle cx="730" cy="240" r="2"/>
-          <circle cx="860" cy="60" r="2.3"/><circle cx="940" cy="200" r="1.8"/><circle cx="560" cy="110" r="1.5"/>
-          <circle cx="100" cy="160" r="1.7"/><circle cx="800" cy="130" r="1.4"/>
-        </g>
-        <!-- Trajectoires -->
-        <g fill="none" stroke="#3a6b54" stroke-width="1.4">
-          <path d="M50 250 Q200 90 380 160 T750 80" stroke-dasharray="4 8"/>
-          <path d="M30 80 Q200 190 380 100 T950 220" stroke-dasharray="6 8"/>
-        </g>
-        <!-- Vaisseau -->
-        <g transform="translate(440 95) rotate(20 60 70)" stroke="#1a2b20" stroke-width="2" stroke-linejoin="round">
-          <path d="M60 8 L92 82 L72 74 L60 102 L48 74 L28 82 Z" fill="#f5f4f2"/>
-          <path d="M60 28 L72 72 L60 64 L48 72 Z" fill="#1f5c3e"/>
-          <path d="M48 74 L22 94 L36 60 M72 74 L98 94 L84 60" fill="#5a9478"/>
-          <path d="M52 98 L60 122 L68 98" fill="#1f5c3e"/>
-        </g>
-        <!-- Obstacles -->
-        <g fill="none" stroke="#1f5c3e" stroke-width="2">
-          <circle cx="188" cy="110" r="26"/><circle cx="188" cy="110" r="38" stroke-dasharray="3 5"/>
-          <circle cx="780" cy="185" r="36"/><circle cx="780" cy="185" r="50" stroke-dasharray="4 6"/>
-        </g>
-        <!-- Labels -->
-        <g fill="#2e4438" font-family="monospace" font-size="11">
-          <text x="38" y="28">DODGE / 01</text>
-          <text x="160" y="78">OBSTACLE</text>
-          <text x="752" y="152">OBSTACLE</text>
-          <text x="420" y="244">PLAYER</text>
-          <text x="820" y="280">SCORE : ???</text>
-        </g>
-        <!-- Panel HUD -->
-        <g transform="translate(820 28)" stroke="#2a3e34" fill="none" stroke-width="1.4">
-          <path d="M0 0 H160 V54 H0 Z"/>
-          <path d="M12 16 H148 M12 28 H124 M12 40 H140"/>
-        </g>
-      </svg>
-    </div>
 
     <!-- Corps -->
     <div class="proj-body">
@@ -108,50 +83,57 @@
         <aside class="proj-sidebar">
           <nav aria-label="Sections de l'étude">
             <p class="proj-sidebar-title">Sommaire</p>
-            <a href="#probleme">Le problème</a>
-            <a href="#scenes">Architecture des scènes</a>
-            <a href="#entrees">Gestion des entrées</a>
-            <a href="#score">Score &amp; sauvegarde</a>
-            <a href="#mobile">Pipeline mobile</a>
-            <a href="#limites">Limites</a>
+            <a href="#demo">Démo gameplay</a>
+            <a href="#jeu">Le jeu</a>
+            <a href="#captures">Captures</a>
+            <a href="#projet-unity">Projet Unity</a>
+            <a href="#telecharger">Télécharger</a>
+            <a href="#transparence">Transparence</a>
           </nav>
         </aside>
 
         <article class="proj-content">
-          <span class="proj-status">Prototype personnel en développement</span>
+          <span class="proj-status">Prototype publié · en développement</span>
 
-          <h2 id="probleme">Le problème</h2>
-          <p>Développer un jeu, même simple, oblige à relier des systèmes qui s'ignorent habituellement : les entrées utilisateur, la physique, le rendu visuel, l'audio, la progression et la persistance. Une mécanique qui fonctionne en isolation peut créer des bugs inattendus quand tout interagit en même temps.</p>
-          <p>Space Dodge est un terrain d'expérimentation intentionnel — l'objectif n'est pas le jeu fini, c'est <strong>de comprendre Unity par la pratique</strong> en touchant à chacun de ces systèmes.</p>
+          <h2 id="demo">Démo gameplay</h2>
+          <div class="proj-video">
+            <iframe src="https://www.youtube.com/embed/IAPeyPLY_co" title="Space Dodge — démo gameplay" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p><a href="https://www.youtube.com/watch?v=IAPeyPLY_co" target="_blank" rel="noopener">Voir la vidéo sur YouTube ↗</a></p>
 
-          <h2 id="scenes">Architecture des scènes</h2>
-          <p>La fiche couvrira la structure en scènes Unity choisie :</p>
-          <ul>
-            <li><strong>Menu principal</strong> — gestion du GameManager, chargement de la scène de jeu</li>
-            <li><strong>Scène de jeu</strong> — boucle principale, spawn des obstacles, gestion de la fin de partie</li>
-            <li><strong>Game Over</strong> — affichage du score, accès aux meilleurs scores, retour au menu</li>
-          </ul>
-          <p>La communication entre scènes (score, états) passe par un singleton GameManager persistant entre les chargements.</p>
+          <h2 id="jeu">Le jeu</h2>
+          <p>Space Dodge est un jeu d'action en 3D, solo, dans un décor de science-fiction. Le principe : esquiver les obstacles et tenir le plus longtemps possible. Le jeu est pensé pour le mobile et ses mécaniques interactives sont adaptées à l'écran tactile.</p>
+          <p>Le menu principal propose cinq entrées : <strong>Play</strong>, <strong>Level</strong> (sélection de niveau), <strong>Options</strong>, <strong>Quit</strong> et <strong>Credit</strong>. Un score est affiché en cours de partie.</p>
+          <p>Deux environnements sont déjà construits : <strong>CanyonScene</strong>, un canyon sous un ciel rouge avec une planète en fond, et <strong>PipeScene</strong>, un tunnel courbe en forme de tuyau.</p>
 
-          <h2 id="entrees">Gestion des entrées</h2>
-          <p>L'Input System de Unity (nouveau système, pas le Legacy) gère les contrôles — clavier sur desktop, touch sur Android. La fiche documentera les <strong>Input Actions</strong> configurées et la gestion des différences de comportement entre les deux plateformes.</p>
-          <p>Un problème spécifique à documenter : la dead zone sur les axes tactiles et la gestion du multi-touch non intentionnel.</p>
+          <h2 id="captures">Captures</h2>
+          <div class="proj-gallery">
+            <figure>
+              <img src="../images/spacedodge/mainMenu.png" alt="Menu principal de Space Dodge dans l'éditeur Unity" loading="lazy">
+              <figcaption>Menu principal (éditeur Unity)</figcaption>
+            </figure>
+            <figure>
+              <img src="../images/spacedodge/CanyonScene.png" alt="Scène Canyon dans l'éditeur Unity" loading="lazy">
+              <figcaption>CanyonScene (éditeur Unity)</figcaption>
+            </figure>
+            <figure>
+              <img src="../images/spacedodge/PipeScene.png" alt="Scène Pipe dans l'éditeur Unity" loading="lazy">
+              <figcaption>PipeScene (éditeur Unity)</figcaption>
+            </figure>
+          </div>
+          <p>Ces captures viennent de l'éditeur Unity, pas d'un téléphone. La vidéo ci-dessus montre le jeu en conditions réelles.</p>
 
-          <h2 id="score">Score &amp; sauvegarde</h2>
-          <p>Le système de score est progressif (distance parcourue + obstacles évités). La sauvegarde utilise <strong>JSON + PlayerPrefs</strong> pour les meilleurs scores locaux. La fiche comparera cette approche à ScriptableObjects pour la persistance des données de jeu.</p>
+          <h2 id="projet-unity">Projet Unity</h2>
+          <p>Le projet est organisé en trois scènes : <strong>MainMenuScene</strong>, <strong>CanyonScene</strong> et <strong>PipeScene</strong>. Les scènes de jeu partagent la même base d'objets : <code>GameManager</code>, <code>Player</code>, <code>HUD</code> et <code>AudioManager</code>. Le menu principal ajoute un <code>SaveManager</code> et un effet de particules <code>StarDust</code>.</p>
+          <p>Côté code, les scripts sont rangés par dossiers : <strong>Core</strong>, <strong>Data</strong>, <strong>Enemies</strong>, entre autres.</p>
 
-          <h2 id="mobile">Pipeline mobile Android</h2>
-          <p>La chaîne de build Android via Unity nécessite :</p>
-          <ul>
-            <li>Configuration du module Android dans Unity Hub</li>
-            <li>Keystore pour la signature de l'APK</li>
-            <li>Réglage des paramètres graphiques (tier de qualité, résolution adaptative)</li>
-            <li>Test sur appareil physique via ADB</li>
-          </ul>
-          <p>Des captures réelles du jeu en cours et les corrections apportées aux effets visuels Android viendront remplacer cette illustration de travail.</p>
+          <h2 id="telecharger">Télécharger</h2>
+          <p>La version Android (<strong>SpaceDodgeV0.0.3.apk</strong>, 232 Mo) est hébergée sur itch.io, en prix libre. GitHub n'accepte pas les fichiers de cette taille, donc elle n'est pas dans ce dépôt.</p>
+          <p>Android demande d'autoriser l'installation d'applications hors Play Store pour installer un APK.</p>
+          <a class="proj-cta" href="https://thetwinclash.itch.io/spacedodge" target="_blank" rel="noopener">Page itch.io de Space Dodge <span>↗</span></a>
 
-          <h2 id="limites">Limites</h2>
-          <p>Un prototype personnel implique des compromis assumés : pas de tests automatisés (Unity Test Framework non utilisé), gestion mémoire basique (pas de pool d'objets pour les obstacles), effets visuels désactivés sur les appareils de bas de gamme. Ces choix seront documentés et justifiés.</p>
+          <h2 id="transparence">Transparence</h2>
+          <p>La page itch.io indique que le projet a été réalisé avec une assistance par IA pour les sons.</p>
         </article>
 
       </div>
@@ -168,5 +150,27 @@
   </footer>
 
 </div>
+
+<script>
+  (function() {
+    var themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', function () {
+        var currentTheme = document.documentElement.style.colorScheme || 'light dark';
+        var activeTheme;
+        if (currentTheme === 'light') {
+          activeTheme = 'light';
+        } else if (currentTheme === 'dark') {
+          activeTheme = 'dark';
+        } else {
+          activeTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        var nextTheme = activeTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.style.colorScheme = nextTheme;
+        localStorage.setItem('theme', nextTheme);
+      });
+    }
+  })();
+</script>
 </body>
 </html>

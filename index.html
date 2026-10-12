@@ -4,6 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f4f2">
+  <script>
+    (function() {
+      var savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.documentElement.style.colorScheme = savedTheme;
+      }
+    })();
+  </script>
   <!-- BUG CORRIGÉ : guillemet fermant et > manquants sur la balise meta description -->
   <meta name="description" content="Portfolio de Quentin De Graeve — développement logiciel, backend, cloud, IA appliquée et robotique.">
   <title>Quentin De Graeve — Carnet d'ingénierie</title>
@@ -22,7 +30,13 @@
       <div class="wrap">
         <span class="signal"><i class="signal-dot" aria-hidden="true"></i> Carnet d'ingénierie / version 01</span>
         <span class="right-note">Logiciel · systèmes · objets qui bougent</span>
-        <span>FR — 2026</span>
+        <div class="topline-right">
+          <span>FR — 2026</span>
+          <button id="themeToggle" class="theme-toggle-btn" aria-label="Changer le thème" title="Changer le thème">
+            <span class="theme-icon-light" aria-hidden="true">☼</span>
+            <span class="theme-icon-dark" aria-hidden="true">☾</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -142,11 +156,11 @@
             <p>Des projets choisis pour raconter une façon de penser : poser le problème, découper le système, tester, puis expliquer les décisions.</p>
           </div>
           <div class="filters reveal" role="group" aria-label="Filtrer les projets">
-            <button class="filter" data-filter="all"       aria-pressed="true">Tout voir · 04</button>
+            <button class="filter" data-filter="all"       aria-pressed="true">Tout voir · 06</button>
             <button class="filter" data-filter="ia"        aria-pressed="false">IA & données</button>
             <button class="filter" data-filter="backend"   aria-pressed="false">Backend / cloud</button>
             <button class="filter" data-filter="robotique" aria-pressed="false">Robotique</button>
-            <button class="filter" data-filter="creation"  aria-pressed="false">Création</button>
+            <button class="filter" data-filter="jeux"      aria-pressed="false">Jeux</button>
           </div>
           <!-- Les cartes projet sont chargées dynamiquement depuis projets/*.html via js/main.js -->
           <div class="project-grid" id="projectGrid"></div><!-- /.project-grid -->
@@ -236,7 +250,7 @@
                 <span>GitHub</span><span>↗</span>
               </a>
               <!-- TODO : remplace href par ton adresse e-mail réelle -->
-              <a class="contact-link" href="quentindegraeve59@gmail.com">
+              <a class="contact-link" href="mailto:quentindegraeve59@gmail.com">
                 <span>E-mail</span><span>↗</span>
               </a>
             </div>
@@ -260,6 +274,6 @@
 
   </div><!-- /.site-root -->
 
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=3"></script>
 </body>
 </html>

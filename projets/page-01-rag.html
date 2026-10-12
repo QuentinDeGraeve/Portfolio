@@ -4,6 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f4f2">
+  <script>
+    (function() {
+      var savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.documentElement.style.colorScheme = savedTheme;
+      }
+    })();
+  </script>
   <meta name="description" content="Étude de cas : architecture RAG — faire répondre l'IA avec des preuves. Par Quentin De Graeve.">
   <title>01 — RAG / Quentin De Graeve</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +27,13 @@
     <div class="wrap">
       <a class="page-nav-back" href="../index.html#projets"><span class="arrow">←</span> Retour aux projets</a>
       <span class="page-nav-brand">Carnet d'ingénierie</span>
-      <span class="page-nav-num">Étude 01 / 04</span>
+      <div class="page-nav-right">
+        <span class="page-nav-num">Étude 01 / 06</span>
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Changer le thème" title="Changer le thème">
+          <span class="theme-icon-light" aria-hidden="true">☼</span>
+          <span class="theme-icon-dark" aria-hidden="true">☾</span>
+        </button>
+      </div>
     </div>
   </nav>
 
@@ -146,5 +160,27 @@
   </footer>
 
 </div>
+
+<script>
+  (function() {
+    var themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', function () {
+        var currentTheme = document.documentElement.style.colorScheme || 'light dark';
+        var activeTheme;
+        if (currentTheme === 'light') {
+          activeTheme = 'light';
+        } else if (currentTheme === 'dark') {
+          activeTheme = 'dark';
+        } else {
+          activeTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        var nextTheme = activeTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.style.colorScheme = nextTheme;
+        localStorage.setItem('theme', nextTheme);
+      });
+    }
+  })();
+</script>
 </body>
 </html>
