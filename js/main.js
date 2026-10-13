@@ -16,7 +16,8 @@
     'projets/projet-03-api-cloud.html',
     'projets/projet-04-space-dodge.html',
     'projets/projet-05-lander.html',
-    'projets/projet-06-twin-clash.html'
+    'projets/projet-06-twin-clash.html',
+    'projets/projet-07-face-to-face.html'
   ];
 
   var grid = document.getElementById('projectGrid');

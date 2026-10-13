@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4f2">
+  <script>
+    (function() {
+      var savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.documentElement.style.colorScheme = savedTheme;
+      }
+    })();
+  </script>
+  <meta name="description" content="Face To Face : quiz jouable dans le navigateur, développé avec Phaser 3. Par Quentin De Graeve.">
+  <title>07 — Face To Face / Quentin De Graeve</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/page-projet.css">
+</head>
+<body>
+<div class="site-root">
+
+  <!-- Nav -->
+  <nav class="page-nav" aria-label="Navigation page projet">
+    <div class="wrap">
+      <a class="page-nav-back" href="../index.html#projets"><span class="arrow">←</span> Retour aux projets</a>
+      <span class="page-nav-brand">Carnet d'ingénierie</span>
+      <div class="page-nav-right">
+        <span class="page-nav-num">Étude 07 / 07</span>
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Changer le thème" title="Changer le thème">
+          <span class="theme-icon-light" aria-hidden="true">☼</span>
+          <span class="theme-icon-dark" aria-hidden="true">☾</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- Hero -->
+    <section class="proj-hero">
+      <div class="wrap proj-hero-inner">
+        <div>
+          <div class="proj-eyebrow"><span class="proj-eyebrow-line"></span> Jeu web · Phaser 3 · Quiz</div>
+          <h1>Face To Face,<br>Héloïse ou <em>Adèle ?</em></h1>
+          <p class="proj-hero-desc">Un quiz jouable directement dans le navigateur : dix photos dans un ordre aléatoire, deux choix possibles et un score final. Il faut 7 bonnes réponses sur 10 pour gagner.</p>
+          <a class="proj-cta" href="#jouer">Jouer maintenant <span>↓</span></a>
+        </div>
+        <div class="proj-meta-block">
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Statut</span>
+            <span class="proj-meta-value">Jouable · 10 questions</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Plateforme</span>
+            <span class="proj-meta-value">Navigateur · souris / tactile</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Technologies</span>
+            <div class="proj-tags">
+              <span class="proj-tag">Phaser 3</span>
+              <span class="proj-tag">JavaScript ES</span>
+              <span class="proj-tag">Scènes</span>
+              <span class="proj-tag">Quiz</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Corps -->
+    <div class="proj-body">
+      <div class="wrap proj-body-grid">
+
+        <aside class="proj-sidebar">
+          <nav aria-label="Sections de l'étude">
+            <p class="proj-sidebar-title">Sommaire</p>
+            <a href="#jouer">Jouer</a>
+            <a href="#regles">Règles</a>
+            <a href="#jeu">Le jeu</a>
+            <a href="#code">Organisation du code</a>
+          </nav>
+        </aside>
+
+        <article class="proj-content">
+          <span class="proj-status">Jouable dans la page</span>
+
+          <h2 id="jouer">Jouer</h2>
+          <div class="proj-game">
+            <iframe src="../jeux/FaceToFace/index.html" title="Face To Face — jeu jouable" loading="lazy" allowfullscreen></iframe>
+            <button type="button" class="proj-game-overlay"><span>Cliquer pour activer le jeu</span></button>
+          </div>
+          <p>Cliquez sur le jeu pour l'activer, puis appuyez sur <strong>JOUER</strong> dans le menu.</p>
+          <a class="proj-cta proj-game-fullscreen" href="../jeux/FaceToFace/index.html" target="_blank" rel="noopener">Ouvrir le jeu en plein écran <span>↗</span></a>
+
+          <h2 id="regles">Règles</h2>
+          <p>Dix photos s'affichent l'une après l'autre. Pour chacune, choisissez <strong>Héloïse</strong> ou <strong>Adèle</strong>. Le bouton choisi passe au vert si la réponse est bonne, au rouge sinon, et la bonne réponse est révélée avant la question suivante.</p>
+          <p>À la fin, avec <strong>7/10 ou plus</strong> vous gagnez, sinon vous perdez. Vous pouvez rejouer : l'ordre des photos est mélangé à chaque partie.</p>
+
+          <h2 id="jeu">Le jeu</h2>
+          <p>Le jeu reprend le thème de <a href="page-06-twin-clash.html">The Twin Clash</a> : même format 960×540, même fond sombre, mêmes boutons et mêmes musiques. Les assets sont optionnels : si une photo, une image ou une musique est absente, le jeu affiche un repli et continue de fonctionner.</p>
+
+          <h2 id="code">Organisation du code</h2>
+          <p>Le projet est découpé en modules JavaScript : scènes (<code>Boot</code>, <code>Preload</code>, <code>Menu</code>, <code>Quiz</code>, <code>Result</code>) et un fichier de données <code>questions.js</code> qui associe chaque photo à sa bonne réponse et fixe le seuil de victoire.</p>
+        </article>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span><strong>QD/</strong> — Quentin De Graeve</span>
+      <span>Étude 07 / Face To Face</span>
+      <a class="back-top" href="../index.html#projets">← Tous les projets</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  (function() {
+    document.querySelectorAll('.proj-game-overlay').forEach(function (overlay) {
+      overlay.addEventListener('click', function () {
+        var game = overlay.parentElement;
+        game.classList.add('is-active');
+        game.querySelector('iframe').focus();
+      });
+    });
+    var themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', function () {
+        var currentTheme = document.documentElement.style.colorScheme || 'light dark';
+        var activeTheme;
+        if (currentTheme === 'light') {
+          activeTheme = 'light';
+        } else if (currentTheme === 'dark') {
+          activeTheme = 'dark';
+        } else {
+          activeTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        var nextTheme = activeTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.style.colorScheme = nextTheme;
+        localStorage.setItem('theme', nextTheme);
+      });
+    }
+  })();
+</script>
+</body>
+</html>
