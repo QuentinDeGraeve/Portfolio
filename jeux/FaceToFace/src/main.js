@@ -17,4 +17,13 @@ const config = {
   scene: [BootScene, PreloadScene, MenuScene, QuizScene, ResultScene]
 };
 
-window.game = new Phaser.Game(config);
+function launchGame() {
+  if (window.game) return;
+  window.game = new Phaser.Game(config);
+}
+
+if (sessionStorage.getItem('facetoface_authenticated') === 'true') {
+  launchGame();
+} else {
+  window.addEventListener('facetoface:unlocked', launchGame);
+}

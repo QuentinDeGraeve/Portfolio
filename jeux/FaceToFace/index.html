@@ -8,12 +8,227 @@
   <!-- Google tag (gtag.js) -->
   <script src="../../js/analytics.js"></script>
   <style>
-    body { margin:0; background:#111; color:#fff; font-family: Arial, Helvetica, sans-serif; }
+    body { margin:0; background:#10121a; color:#fff; font-family: Arial, Helvetica, sans-serif; }
     #game-container { width: 100%; height: 100vh; display:flex; align-items:center; justify-content:center; }
+
+    /* Écran de mot de passe */
+    .pwd-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #10121a;
+      padding: 24px;
+      transition: opacity .35s ease, visibility .35s ease;
+    }
+    .pwd-gate.is-unlocked {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .pwd-card {
+      width: 100%;
+      max-width: 420px;
+      background: #1a1d28;
+      border: 1px solid #2f384a;
+      padding: 32px 28px;
+      text-align: center;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, .4);
+    }
+    .pwd-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font: 11px monospace;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: #3dbd7a;
+      border: 1px solid #2f384a;
+      background: #10121a;
+      padding: 4px 10px;
+      margin-bottom: 20px;
+    }
+    .pwd-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #3dbd7a;
+    }
+    .pwd-icon {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 16px;
+      display: grid;
+      place-items: center;
+      background: #10121a;
+      border: 1px solid #2f384a;
+      color: #edecea;
+    }
+    .pwd-title {
+      font-size: 26px;
+      font-weight: bold;
+      margin: 0 0 10px;
+      color: #edecea;
+    }
+    .pwd-desc {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #909e98;
+      margin: 0 0 22px;
+    }
+    .pwd-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .pwd-input-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .pwd-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px 42px 12px 14px;
+      background: #10121a;
+      border: 1px solid #2f384a;
+      color: #edecea;
+      font-size: 14px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .pwd-input:focus {
+      border-color: #3dbd7a;
+      box-shadow: 0 0 0 2px rgba(61, 189, 122, .25);
+    }
+    .pwd-toggle-vis {
+      position: absolute;
+      right: 6px;
+      background: transparent;
+      border: none;
+      color: #909e98;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .pwd-toggle-vis:hover { color: #fff; }
+    .pwd-toggle-vis.is-visible { color: #3dbd7a; }
+    .pwd-error {
+      min-height: 18px;
+      font: 11px monospace;
+      color: #ff5252;
+      text-align: left;
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    .pwd-error.show { opacity: 1; }
+    .pwd-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 4px;
+    }
+    .pwd-submit {
+      width: 100%;
+      padding: 12px 16px;
+      background: #3dbd7a;
+      color: #0d1410;
+      border: 1px solid #3dbd7a;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background .2s, border-color .2s;
+    }
+    .pwd-submit:hover {
+      background: #4de696;
+      border-color: #4de696;
+    }
+    .pwd-back {
+      font: 11px monospace;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #909e98;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 6px 0;
+      transition: color .2s;
+    }
+    .pwd-back:hover { color: #edecea; }
+    .pwd-gate.shake .pwd-card {
+      animation: pwdShake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    @keyframes pwdShake {
+      10%, 90% { transform: translateX(-4px); }
+      20%, 80% { transform: translateX(5px); }
+      30%, 50%, 70% { transform: translateX(-6px); }
+      40%, 60% { transform: translateX(6px); }
+    }
   </style>
 </head>
 <body>
+  <!-- Écran de saisie du mot de passe -->
+  <div id="passwordGate" class="pwd-gate" aria-modal="true" role="dialog" aria-labelledby="pwdTitle">
+    <div class="pwd-card">
+      <div class="pwd-badge">
+        <span class="pwd-badge-dot"></span>
+        <span>Face To Face · Accès protégé</span>
+      </div>
+      <div class="pwd-icon" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+      </div>
+      <h1 id="pwdTitle" class="pwd-title">Face To Face</h1>
+      <p class="pwd-desc">Ce jeu contient des photos personnelles. Veuillez saisir le mot de passe pour jouer.</p>
+
+      <form id="pwdForm" class="pwd-form" autocomplete="off">
+        <div class="pwd-input-group">
+          <input
+            type="password"
+            id="pwdInput"
+            class="pwd-input"
+            placeholder="Mot de passe..."
+            required
+            autocomplete="current-password"
+            aria-label="Mot de passe"
+          >
+          <button type="button" id="pwdToggleVisibility" class="pwd-toggle-vis" aria-label="Afficher ou masquer le mot de passe" title="Afficher/masquer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+
+        <div id="pwdError" class="pwd-error" role="alert" aria-live="polite"></div>
+
+        <div class="pwd-actions">
+          <button type="submit" class="pwd-submit">
+            <span>Déverrouiller le jeu</span>
+            <span>→</span>
+          </button>
+          <a href="../../projets/page-07-face-to-face.html" class="pwd-back">
+            <span>←</span> Fiche du projet
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <div id="game-container"></div>
+  <script src="../../js/auth-facetoface.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
   <script type="module" src="./src/main.js"></script>
 </body>
