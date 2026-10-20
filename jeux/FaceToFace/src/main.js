@@ -10,8 +10,9 @@ const config = {
   height: 540,
   parent: 'game-container',
   scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH
+    // Taille CSS gérée par index.html (canvas étiré sur tout l'écran)
+    mode: Phaser.Scale.NONE,
+    autoCenter: Phaser.Scale.NO_CENTER
   },
   backgroundColor: '#10121a',
   scene: [BootScene, PreloadScene, MenuScene, QuizScene, ResultScene]

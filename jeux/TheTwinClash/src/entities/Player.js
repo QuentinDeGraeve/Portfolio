@@ -30,12 +30,22 @@ export default class Player extends Fighter {
     if (!this.isAlive) return;
     this.updateState();
     const now = this.scene.time.now;
+    // Contrôles tactiles (joystick + boutons) si présents, en plus du clavier
+    const t = this.scene.touch;
+    const left = this.cursors.left.isDown || (t && t.left);
+    const right = this.cursors.right.isDown || (t && t.right);
+    const up = this.cursors.up.isDown || (t && t.up);
+    const down = this.cursors.down.isDown || (t && t.down);
+    const dashPressed = Phaser.Input.Keyboard.JustDown(this.dashKey) || (t && t.justDown('dash'));
+    const specialPressed = Phaser.Input.Keyboard.JustDown(this.specialKey) || (t && t.justDown('special'));
+    const punchPressed = Phaser.Input.Keyboard.JustDown(this.attackKey) || (t && t.justDown('punch'));
+    const kickPressed = Phaser.Input.Keyboard.JustDown(this.kickKey) || (t && t.justDown('kick'));
 
     // movement input (allow horizontal movement during jump)
     const blockedStates = ['attack', 'kick', 'dash', 'special', 'stun', 'dead'];
     if (!blockedStates.includes(this.state)) {
       // horizontal movement
-      if (this.cursors.left.isDown) {
+      if (left) {
         this.setVelocityX(-this.speed);
         this.facing = 'left';
         this.setFlipX(true);
@@ -46,7 +56,7 @@ export default class Player extends Fighter {
         } else {
           this.setState('jump');
         }
-      } else if (this.cursors.right.isDown) {
+      } else if (right) {
         this.setVelocityX(this.speed);
         this.facing = 'right';
         this.setFlipX(false);
@@ -63,9 +73,9 @@ export default class Player extends Fighter {
       }
 
       // vertical/simple actions
-      if (this.cursors.up.isDown) {
+      if (up) {
         if (!this.isJumping) this.doJump();
-      } else if (this.cursors.down.isDown) {
+      } else if (down) {
         this.play('adele_crouch', true);
         this.setState('crouch');
       }
@@ -75,19 +85,19 @@ export default class Player extends Fighter {
     }
 
     // dash
-    if (Phaser.Input.Keyboard.JustDown(this.dashKey) && now - this.lastDash > this.dashCooldown) {
+    if (dashPressed && now - this.lastDash > this.dashCooldown) {
       this.lastDash = now;
       this.doDash();
     }
 
     // special attack
-    if (Phaser.Input.Keyboard.JustDown(this.specialKey) && now - this.lastSpecial > this.specialCooldown) {
+    if (specialPressed && now - this.lastSpecial > this.specialCooldown) {
       this.lastSpecial = now;
       this.doSpecial(target);
     }
 
     // attack / combo (punch)
-    if (Phaser.Input.Keyboard.JustDown(this.attackKey) && now - this.lastAttack > this.attackCooldown) {
+    if (punchPressed && now - this.lastAttack > this.attackCooldown) {
       this.lastAttack = now;
       this.doAttack(target);
       // combo management
@@ -97,7 +107,7 @@ export default class Player extends Fighter {
     }
 
     // kick
-    if (Phaser.Input.Keyboard.JustDown(this.kickKey) && now - this.lastKick > this.kickCooldown) {
+    if (kickPressed && now - this.lastKick > this.kickCooldown) {
       this.lastKick = now;
       this.doKick(target);
     }

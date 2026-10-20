@@ -15,6 +15,7 @@ export default class PreloadScene extends Phaser.Scene {
     // background and menu images
     this.load.image('bg', 'assets/sprites/images/bg.png');
     this.load.image('menu', 'assets/sprites/images/menu.png');
+    this.load.image('bgRingHaut', 'assets/sprites/images/bgRingHaut.jpg');
 
     // audio
     this.load.audio('punch', 'assets/audio/sound/punch.wav');
@@ -22,6 +23,8 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.audio('hit', 'assets/audio/sound/hit.wav');
     this.load.audio('dash', 'assets/audio/sound/dash.wav');
     this.load.audio('special', 'assets/audio/sound/special.wav');
+    this.load.audio('ambArena', 'assets/audio/sound/497696__syntaxseed__fight-arena-4.wav');
+    this.load.audio('ambBoo', 'assets/audio/sound/25270__freesound__to_be_booed2_ses1.wav');
 
     // background music
     this.load.audio('bgmMenu', 'assets/audio/music/OmbreFeu.wav');

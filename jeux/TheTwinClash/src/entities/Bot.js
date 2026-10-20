@@ -72,7 +72,7 @@ export default class Bot extends Fighter {
     this.setState('attack', 250);
     this.play('heloise_punch', true);
     this.scene.time.delayedCall(120, () => {
-      if (Math.abs(this.x - player.x) <= this.attackRange) { player.takeDamage(6, true); this.spawnHit(player); }
+      if (Math.abs(this.x - player.x) <= this.attackRange) { player.takeDamage(6 * this.damageScale, true); this.spawnHit(player); }
     });
   }
 
@@ -80,15 +80,15 @@ export default class Bot extends Fighter {
     this.setState('attack', 450);
     this.play('heloise_punch', true);
     // two quick hits
-    this.scene.time.delayedCall(100, () => { if (Math.abs(this.x - player.x) <= this.attackRange) { player.takeDamage(6, true); this.spawnHit(player); } });
-    this.scene.time.delayedCall(260, () => { if (Math.abs(this.x - player.x) <= this.attackRange) { player.takeDamage(5, true); this.spawnHit(player); } });
+    this.scene.time.delayedCall(100, () => { if (Math.abs(this.x - player.x) <= this.attackRange) { player.takeDamage(6 * this.damageScale, true); this.spawnHit(player); } });
+    this.scene.time.delayedCall(260, () => { if (Math.abs(this.x - player.x) <= this.attackRange) { player.takeDamage(5 * this.damageScale, true); this.spawnHit(player); } });
   }
 
   doHeavy(player) {
     this.setState('attack', 500);
     this.play('heloise_punch', true);
     this.scene.time.delayedCall(260, () => {
-      if (Math.abs(this.x - player.x) <= this.attackRange) { player.takeDamage(14, true); this.spawnHit(player, true); }
+      if (Math.abs(this.x - player.x) <= this.attackRange) { player.takeDamage(14 * this.damageScale, true); this.spawnHit(player, true); }
     });
   }
 

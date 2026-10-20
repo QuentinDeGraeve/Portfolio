@@ -3,14 +3,25 @@ export default class HudScene extends Phaser.Scene {
   constructor() { super('HUD'); }
   init(data) {
     this.player = data.player; this.bot = data.bot; this.gameScene = data.gameScene;
+    this.ally = data.ally || null; this.noTimer = !!data.noTimer; this.names = data.names || null;
   }
   create() {
     this.playerBar = new HealthBar(this, 20, 20, this.player, 0x46d160);
     this.botBar = new HealthBar(this, 720, 20, this.bot, 0xff4444);
-    this.info = this.add.text(20, 48, 'SPACE: attack | SHIFT: special | D: dash', { fontSize: '14px' });
+
+    // Mode histoire : noms des combattants et barre de vie de la sœur alliée
+    if (this.names) {
+      this.add.text(20, 2, this.names.player, { fontSize: '12px', fontStyle: 'bold', color: '#6ec1ff' });
+      this.add.text(720, 2, this.names.bot, { fontSize: '12px', fontStyle: 'bold', color: '#ff8f8f' });
+    }
+    if (this.ally) {
+      this.allyBar = new HealthBar(this, 20, 90, this.ally, 0xff8fd0);
+      this.add.text(20, 72, this.names ? this.names.ally : '', { fontSize: '12px', fontStyle: 'bold', color: '#ff8fd0' });
+    }
 
     // Timer setup
-    this.timerText = this.add.text(480, 50, '90', { 
+    if (this.noTimer) return;
+    this.timerText = this.add.text(480, 50, String(this.gameScene.gameTime), { 
       fontSize: '32px', 
       color: '#ffffff',
       stroke: '#000000',
@@ -28,6 +39,7 @@ export default class HudScene extends Phaser.Scene {
   update() {
     this.playerBar.update();
     this.botBar.update();
+    if (this.allyBar) this.allyBar.update();
   }
 
   updateTimer() {

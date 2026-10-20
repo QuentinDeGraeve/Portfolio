@@ -5,6 +5,8 @@ export default class Fighter extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
     this.health = 100; this.maxHealth = 100; this.speed = 220; this.attackRange = 70;
     this.isAlive = true;
+    this.damageScale = 1;      // multiplicateur des dégâts infligés (mode histoire)
+    this.damageTakenScale = 1; // multiplicateur des dégâts reçus (mode histoire)
     this.state = 'idle'; // idle, run, attack, stun, dash, special
     this.stateTimer = 0;
   }
@@ -24,7 +26,7 @@ export default class Fighter extends Phaser.Physics.Arcade.Sprite {
 
   takeDamage(amount, stun=false) {
     if (!this.isAlive) return;
-    this.health = Math.max(0, this.health - amount);
+    this.health = Math.max(0, this.health - amount * this.damageTakenScale);
     if (stun) this.setState('stun', 500);
     if (this.health <= 0) this.die();
   }
