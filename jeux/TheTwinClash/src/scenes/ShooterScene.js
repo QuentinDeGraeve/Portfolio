@@ -30,24 +30,16 @@ export default class ShooterScene extends Phaser.Scene {
     this.warned = { A: false, B: false };
     this.startTime = this.time.now;
 
-    // Taille du monde : écran fixe en mode histoire, grand ring scrollable en mode Survie
-    this.worldW = this.scale.width;
-    this.worldH = this.scale.height;
-    if (!this.story) {
-      const src = this.textures.get('bgRingHaut').getSourceImage();
-      this.worldW = WORLD_WIDTH;
-      this.worldH = Math.round(WORLD_WIDTH * src.height / src.width);
-      this.add.image(this.worldW / 2, this.worldH / 2, 'bgRingHaut').setDisplaySize(this.worldW, this.worldH);
-    } else {
-      this.add.image(480, 270, 'bg').setDisplaySize(this.scale.width, this.scale.height).setTint(0x8888aa);
-    }
+    // Taille du monde : grand ring scrollable (même fond pour Histoire et Survie)
+    const src = this.textures.get('bgRingHaut').getSourceImage();
+    this.worldW = WORLD_WIDTH;
+    this.worldH = Math.round(WORLD_WIDTH * src.height / src.width);
+    this.add.image(this.worldW / 2, this.worldH / 2, 'bgRingHaut').setDisplaySize(this.worldW, this.worldH);
     this.cameras.main.setBackgroundColor('#10131a');
-    // Limites de déplacement : les cordes en mode Survie, tout l'écran en mode histoire
-    this.zone = this.story
-      ? new Phaser.Geom.Rectangle(0, 0, this.worldW, this.worldH)
-      : new Phaser.Geom.Rectangle(
-          this.worldW * RING_ZONE.l, this.worldH * RING_ZONE.t,
-          this.worldW * (RING_ZONE.r - RING_ZONE.l), this.worldH * (RING_ZONE.b - RING_ZONE.t));
+    // Limites de déplacement : intérieur des cordes pour les deux modes
+    this.zone = new Phaser.Geom.Rectangle(
+        this.worldW * RING_ZONE.l, this.worldH * RING_ZONE.t,
+        this.worldW * (RING_ZONE.r - RING_ZONE.l), this.worldH * (RING_ZONE.b - RING_ZONE.t));
     this.physics.world.setBounds(this.zone.x, this.zone.y, this.zone.width, this.zone.height);
 
     this.sound.stopAll();
@@ -57,17 +49,16 @@ export default class ShooterScene extends Phaser.Scene {
     // Texture générée (balles)
     this.makeCircleTexture('bullet', 5, 0xfff2a0);
 
-    // Sœurs
-    const sx = this.story ? 300 : this.worldW / 2, sy = this.story ? 270 : this.worldH / 2;
+    // Sœurs : placées au centre du ring dans les deux modes
+    const sx = this.worldW / 2, sy = this.worldH / 2;
     this.adele = this.makeSister(sx, sy, 'adele_fighter', 'adele_idle');
-    // Mode Survie : Adèle seule
+    // Mode Survie : Adèle seule ; Mode Histoire : Héloïse l'accompagne
     this.heloise = this.story ? this.makeSister(sx - 80, sy + 30, 'heloise_fighter', 'heloise_idle') : null;
     this.sisters = this.heloise ? [this.adele, this.heloise] : [this.adele];
 
-    if (!this.story) {
-      this.cameras.main.setBounds(0, 0, this.worldW, this.worldH);
-      this.cameras.main.startFollow(this.adele, true, 0.1, 0.1);
-    }
+    // Caméra scrollable pour les deux modes
+    this.cameras.main.setBounds(0, 0, this.worldW, this.worldH);
+    this.cameras.main.startFollow(this.adele, true, 0.1, 0.1);
 
     this.bullets = this.physics.add.group();
     this.enemies = this.physics.add.group();

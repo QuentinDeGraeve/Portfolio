@@ -10,7 +10,7 @@ export default class GameOver extends Phaser.Scene {
 
     const w = this.scale.width, h = this.scale.height;
     this.add.text(w/2, h/2 - 40, 'GAME OVER', { fontSize: '48px', color: '#ff4444' }).setOrigin(0.5);
-    this.add.text(w/2, h/2 + 10, data && data.wave ? `Vous avez tenu jusqu'à la vague ${data.wave}` : 'Vous avez été vaincu...', { fontSize: '20px' }).setOrigin(0.5);
+    this.add.text(w/2, h/2 + 10, data && data.wave ? `Vous avez tenu jusqu'à la vague ${data.wave}` : 'You were defeated...', { fontSize: '20px' }).setOrigin(0.5);
 
     // play game over music if available
     if (this.cache.audio.exists('bgmGameOver')) {
