@@ -76,20 +76,6 @@ export default class MenuScene extends Phaser.Scene {
     ctrlButton.on('pointerout', () => ctrlButton.setFillStyle(0x555555));
     ctrlButton.on('pointerdown', () => this.showControls());
 
-    // DEV: Lancer directement le Boss Fight
-    const devBossX = w - 105, devBossY = 32;
-    const devBossBtn = this.add.rectangle(devBossX, devBossY, 175, 36, 0x5b2c6f)
-      .setInteractive()
-      .setStrokeStyle(1.5, 0xbb8fce);
-    this.add.text(devBossX, devBossY, '⚡ DEV : BOSS FIGHT', { fontSize: '13px', fontStyle: 'bold', color: '#f5eef8' }).setOrigin(0.5);
-
-    devBossBtn.on('pointerover', () => devBossBtn.setFillStyle(0x7d3c98));
-    devBossBtn.on('pointerout', () => devBossBtn.setFillStyle(0x5b2c6f));
-    devBossBtn.on('pointerdown', () => {
-      stopMusic();
-      runStep(this, 'act3_fight');
-    });
-
     // Overlay contrôles (cachée par défaut)
     this._buildControlsOverlay(w, h);
   }

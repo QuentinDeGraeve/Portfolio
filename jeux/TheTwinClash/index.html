@@ -13,10 +13,40 @@
     /* Le jeu est étiré sur tout l'écran */
     #game-container { position:fixed; inset:0; width:100vw; height:100dvh; }
     #game-container canvas { width:100% !important; height:100% !important; display:block; margin:0 !important; }
+    /* Bouton plein écran en haut à droite */
+    #fs-btn { position:fixed; top:6px; right:6px; z-index:10; width:40px; height:40px; padding:0; border:2px solid #fff; border-radius:8px;
+      background:rgba(0,0,0,.55); color:#fff; font-size:22px; line-height:1; cursor:pointer; display:none; touch-action:manipulation; }
+    #fs-btn:active { background:rgba(255,255,255,.3); }
   </style>
 </head>
 <body>
   <div id="game-container"></div>
+  <button id="fs-btn" type="button" aria-label="Plein écran" title="Plein écran">⛶</button>
+  <script>
+    // Plein écran via l'API Fullscreen (Android, iPad, ordinateur). Le bouton est masqué si le navigateur ne le permet pas
+    // (iPhone : utiliser « Ajouter à l'écran d'accueil »).
+    (function () {
+      var btn = document.getElementById('fs-btn');
+      var el = document.documentElement;
+      var request = el.requestFullscreen || el.webkitRequestFullscreen;
+      var exit = document.exitFullscreen || document.webkitExitFullscreen;
+      if (!request || !document.fullscreenEnabled && !document.webkitFullscreenEnabled) return;
+      var isFs = function () { return !!(document.fullscreenElement || document.webkitFullscreenElement); };
+      btn.style.display = 'block';
+      btn.addEventListener('click', function () {
+        if (isFs()) { exit.call(document); return; }
+        var p = request.call(el);
+        // Sur mobile, on passe aussi en paysage si possible
+        var lockLandscape = function () {
+          if (screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(function () {});
+        };
+        if (p && p.then) p.then(lockLandscape).catch(function () {}); else lockLandscape();
+      });
+      var refresh = function () { btn.textContent = isFs() ? '✕' : '⛶'; };
+      document.addEventListener('fullscreenchange', refresh);
+      document.addEventListener('webkitfullscreenchange', refresh);
+    })();
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
   <script type="module" src="./src/main.js"></script>
 </body>

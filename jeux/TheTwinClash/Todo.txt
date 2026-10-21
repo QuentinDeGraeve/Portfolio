@@ -1,0 +1,14 @@
+Son
+ - changé son d'ambiance punch kick hit special dash
+
+bug 
+ - Enemie walk
+ - Boss crouch
+
+feature
+ - ajout boule de feu combat et survie
+ - ajout explosion spritsheet au mode survie
+ - icone  visage au dialogue
+ - améliorer collision combat et gameplay (knock back,Protection,Crouch)
+ - ajout selection de personnage avec pere a unlock
+ - scoring et sauvegard de la partie

@@ -4,6 +4,7 @@ import Boss from '../entities/Boss.js';
 import Barks from '../ui/Barks.js';
 import { BARKS, STEPS, runStep, stepTarget } from '../story/storyScript.js';
 import TouchControls from '../ui/TouchControls.js';
+import runCountdown from '../ui/Countdown.js';
 
 export default class GameScene extends Phaser.Scene {
   constructor() { super('Game'); }
@@ -13,7 +14,9 @@ export default class GameScene extends Phaser.Scene {
 
     // background music (on coupe tout avant, pour éviter un double lancement)
     this.sound.stopAll();
-    this.gameSceneMusic = this.sound.add('bgmCombat', { loop: true, volume: 0.5 });
+    // Acte III (boss final) : musique du boss ; sinon musique de combat
+    const isBoss = !!(data && data.story && data.story.act === 3);
+    this.gameSceneMusic = this.sound.add(isBoss ? 'bgmBoss' : 'bgmCombat', { loop: true, volume: 0.5 });
     this.gameSceneMusic.play();
 
     // particle manager for hits/trails
@@ -22,6 +25,7 @@ export default class GameScene extends Phaser.Scene {
     // Determine game mode
     this.story = (data && data.story) || null;
     this.gameOver = false;
+    this.started = false; // passe à true à la fin du compte à rebours
     this.gameTime = 90; // Initialize game time
     this.ally = null;
     this.noTimer = false;
@@ -38,7 +42,7 @@ export default class GameScene extends Phaser.Scene {
         this.bot.damageTakenScale = 0.3;  // et on ne veut pas la blesser
         this.gameTime = 45;
         hudNames = { player: 'ADÈLE', bot: 'HÉLOÏSE' };
-        BARKS.act1.forEach(b => this.time.delayedCall(b.at, () => this.barks.say(b.lines)));
+        this.onStart = () => BARKS.act1.forEach(b => this.time.delayedCall(b.at, () => this.barks.say(b.lines)));
       } else {
         // Acte III : boss final (le père), Héloïse combat aux côtés d'Adèle
         this.player.x = 220;
@@ -47,7 +51,7 @@ export default class GameScene extends Phaser.Scene {
         this.bot = new Boss(this, 780, 413, this.particles);
         this.noTimer = true;
         hudNames = { player: 'ADÈLE', bot: 'LE PÈRE', ally: 'HÉLOÏSE' };
-        this.time.delayedCall(800, () => this.barks.say(BARKS.act3[1]));
+        this.onStart = () => this.time.delayedCall(800, () => this.barks.say(BARKS.act3[1]));
       }
     } else {
       // Mode Combat : Adèle vs Héloïse
@@ -76,10 +80,16 @@ export default class GameScene extends Phaser.Scene {
     this.scene.launch('HUD', { player: this.player, bot: this.bot, gameScene: this, ally: this.ally, noTimer: this.noTimer, names: hudNames });
 
     this.cameras.main.setBackgroundColor('#10131a');
+
+    // Compte à rebours : le combat (et le chronomètre) démarre à "FIGHT !"
+    runCountdown(this, () => {
+      this.started = true;
+      if (this.onStart) this.onStart();
+    });
   }
 
   update() {
-    if (this.gameOver) return;
+    if (this.gameOver || !this.started) return;
 
     if (this.story) {
       this.updateStory();

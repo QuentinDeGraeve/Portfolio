@@ -30,9 +30,11 @@ export default class PreloadScene extends Phaser.Scene {
 
     // background music
     this.load.audio('bgmMenu', 'assets/audio/music/OmbreFeu.wav');
-    this.load.audio('bgmCombat', 'assets/audio/music/OmbreFeu.wav');
+    this.load.audio('bgmCombat', 'assets/audio/music/fightSong.mp3');
+    this.load.audio('bgmBoss', 'assets/audio/music/bossSong.mp3');
     this.load.audio('bgmGameOver', 'assets/audio/music/SadOmbreFeu.mp3');
-    this.load.audio('bgmGameWin', 'assets/audio/music/SadOmbreFeu.mp3');
+    this.load.audio('bgmGameWin', 'assets/audio/music/OmbreFeu.wav');
+    this.load.audio('bgmAffronteBoss', 'assets/audio/music/Affronte le Boss.mp3');
 
   }
 

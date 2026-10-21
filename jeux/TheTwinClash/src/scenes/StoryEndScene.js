@@ -40,7 +40,9 @@ export default class StoryEndScene extends Phaser.Scene {
     this.input.keyboard.once('keydown-ESC', () => this.toMenu());
 
     // Bouton tactile pour passer le générique
-    const skip = this.add.text(w - 20, 15, 'PASSER >', { fontSize: '16px', color: '#aaaaaa', backgroundColor: '#222222', padding: { x: 10, y: 6 } })
+    // Placé sous le bouton plein écran (HTML, en haut à droite) : conversion px CSS -> coordonnées du canvas étiré
+    const cv = this.game.canvas;
+    const skip = this.add.text(w - 6 * w / cv.clientWidth, 54 * h / cv.clientHeight, 'PASSER >', { fontSize: '16px', color: '#aaaaaa', backgroundColor: '#222222', padding: { x: 10, y: 6 } })
       .setOrigin(1, 0).setDepth(10).setInteractive();
     skip.on('pointerdown', () => this.toMenu());
   }

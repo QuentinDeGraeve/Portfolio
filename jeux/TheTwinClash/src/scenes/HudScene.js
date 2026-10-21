@@ -21,11 +21,12 @@ export default class HudScene extends Phaser.Scene {
 
     // Timer setup
     if (this.noTimer) return;
-    this.timerText = this.add.text(480, 50, String(this.gameScene.gameTime), { 
-      fontSize: '32px', 
+    this.timerText = this.add.text(480, 55, String(this.gameScene.gameTime), {
+      fontSize: '64px',
+      fontStyle: 'bold',
       color: '#ffffff',
       stroke: '#000000',
-      strokeThickness: 3
+      strokeThickness: 6
     }).setOrigin(0.5);
 
     // Start countdown timer
@@ -43,7 +44,7 @@ export default class HudScene extends Phaser.Scene {
   }
 
   updateTimer() {
-    if (this.gameScene.gameOver) return;
+    if (this.gameScene.gameOver || !this.gameScene.started) return;
     
     this.gameScene.gameTime--;
     

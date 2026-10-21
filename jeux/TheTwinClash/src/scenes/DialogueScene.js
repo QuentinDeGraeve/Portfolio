@@ -17,7 +17,8 @@ export default class DialogueScene extends Phaser.Scene {
     const w = this.scale.width, h = this.scale.height;
     this.sound.stopAll();
     this.add.image(480, 270, 'bg').setDisplaySize(w, h).setTint(0x333344);
-    if (this.step.ambience) this.sound.add(this.step.ambience, { loop: true, volume: 0.5 }).play();
+    if (this.step.ambience) this.sound.add(this.step.ambience, { loop: true, volume: this.step.ambienceVolume ?? 0.5 }).play();
+    if (this.step.music) this.sound.add(this.step.music, { loop: true, volume: 0.5 }).play();
 
     // Boîte de dialogue
     this.box = this.add.rectangle(w / 2, h - 110, w - 60, 170, 0x000000, 0.8).setStrokeStyle(2, 0xffffff).setVisible(false);
@@ -28,7 +29,9 @@ export default class DialogueScene extends Phaser.Scene {
     this.titleText = this.add.text(w / 2, h / 2 - 20, this.step.title || '', { fontSize: '38px', fontStyle: 'bold', align: 'center' }).setOrigin(0.5).setAlpha(0);
     this.hintText = this.add.text(w / 2, h / 2 + 60, this.step.hint || '', { fontSize: '16px', color: '#cccccc', align: 'center', lineSpacing: 6 }).setOrigin(0.5).setAlpha(0);
 
-    const skip = this.add.text(w - 20, 15, 'PASSER >>', { fontSize: '16px', color: '#cccccc', backgroundColor: '#222222', padding: { x: 10, y: 6 } })
+    // Placé sous le bouton plein écran (HTML, en haut à droite) : conversion px CSS -> coordonnées du canvas étiré
+    const cv = this.game.canvas;
+    const skip = this.add.text(w - 6 * w / cv.clientWidth, 54 * h / cv.clientHeight, 'PASSER >>', { fontSize: '16px', color: '#cccccc', backgroundColor: '#222222', padding: { x: 10, y: 6 } })
       .setOrigin(1, 0).setDepth(10).setInteractive();
     // Le tap sur "Passer" ne doit pas aussi faire avancer la réplique
     skip.on('pointerdown', (pointer, lx, ly, event) => { event.stopPropagation(); this.finish(); });

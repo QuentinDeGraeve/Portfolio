@@ -2,6 +2,7 @@ import HealthBar from '../ui/HealthBar.js';
 import Barks from '../ui/Barks.js';
 import TouchControls from '../ui/TouchControls.js';
 import { BARKS, STEPS, runStep, stepTarget } from '../story/storyScript.js';
+import runCountdown from '../ui/Countdown.js';
 
 // Acte II : shooter en vue du dessus.
 // Adèle est contrôlée par le joueur, Héloïse la suit et tire automatiquement.
@@ -24,6 +25,7 @@ export default class ShooterScene extends Phaser.Scene {
     // Mode histoire (acte II) : 3 vagues puis dialogue. Sans données : mode Survie (vagues infinies).
     this.story = (data && data.story) || null;
     this.finished = false;
+    this.started = false; // passe à true à la fin du compte à rebours
     this.waveIndex = -1;
     this.toSpawn = 0;
     this.waveClearing = false;
@@ -93,7 +95,11 @@ export default class ShooterScene extends Phaser.Scene {
     this.banner = this.add.text(480, 200, '', { fontSize: '40px', fontStyle: 'bold', color: '#ffffff', stroke: '#000000', strokeThickness: 5 }).setOrigin(0.5).setScrollFactor(0).setDepth(100).setAlpha(0);
     this.barks = new Barks(this);
 
-    this.time.delayedCall(600, () => this.startNextWave());
+    runCountdown(this, () => {
+      this.started = true;
+      this.startTime = this.time.now;
+      this.time.delayedCall(600, () => this.startNextWave());
+    });
   }
 
   makeCircleTexture(key, r, color) {
@@ -167,7 +173,7 @@ export default class ShooterScene extends Phaser.Scene {
 
   // --- Boucle -------------------------------------------------------------
   update(time) {
-    if (this.finished) return;
+    if (this.finished || !this.started) return;
 
     this.barA.update();
     if (this.barB) this.barB.update();
