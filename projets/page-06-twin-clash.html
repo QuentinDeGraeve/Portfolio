@@ -44,18 +44,18 @@
       <div class="wrap proj-hero-inner">
         <div>
           <div class="proj-eyebrow"><span class="proj-eyebrow-line"></span> Jeu web · Phaser 3 · Combat 2D</div>
-          <h1>The Twin Clash,<br>Adèle contre <em>Héloïse.</em></h1>
-          <p class="proj-hero-desc">Un jeu de combat 2D jouable directement dans le navigateur : combos, attaque spéciale, dash, un bot adverse et un mode deux joueurs sur le même clavier.</p>
+          <h1>The Twin Clash,<br>deux sœurs contre <em>leur père.</em></h1>
+          <p class="proj-hero-desc">Un jeu jouable directement dans le navigateur, au clavier comme sur mobile : un mode Histoire en trois actes avec dialogues et boss final, un combat contre un bot et un mode Survie en vagues.</p>
           <a class="proj-cta" href="#jouer">Jouer maintenant <span>↓</span></a>
         </div>
         <div class="proj-meta-block">
           <div class="proj-meta-item">
             <span class="proj-meta-label">Statut</span>
-            <span class="proj-meta-value">Jouable · vs bot ou vs joueur</span>
+            <span class="proj-meta-value">Jouable · Histoire, Combat, Survie</span>
           </div>
           <div class="proj-meta-item">
             <span class="proj-meta-label">Plateforme</span>
-            <span class="proj-meta-value">Navigateur · clavier</span>
+            <span class="proj-meta-value">Navigateur · clavier, tactile, plein écran</span>
           </div>
           <div class="proj-meta-item">
             <span class="proj-meta-label">Technologies</span>
@@ -63,8 +63,9 @@
               <span class="proj-tag">Phaser 3</span>
               <span class="proj-tag">JavaScript ES</span>
               <span class="proj-tag">Spritesheets</span>
-              <span class="proj-tag">IA de bot</span>
-              <span class="proj-tag">PvP local</span>
+              <span class="proj-tag">IA de bot et de boss</span>
+              <span class="proj-tag">Contrôles tactiles</span>
+              <span class="proj-tag">Web Audio</span>
             </div>
           </div>
         </div>
@@ -80,8 +81,10 @@
             <p class="proj-sidebar-title">Sommaire</p>
             <a href="#jouer">Jouer</a>
             <a href="#commandes">Commandes</a>
-            <a href="#jeu">Le jeu</a>
-            <a href="#bot">Le bot</a>
+            <a href="#modes">Les modes de jeu</a>
+            <a href="#ia">Le bot et le boss</a>
+            <a href="#mobile">Mobile et plein écran</a>
+            <a href="#son">Son et dialogues</a>
             <a href="#code">Organisation du code</a>
           </nav>
         </aside>
@@ -94,30 +97,59 @@
             <iframe src="../jeux/TheTwinClash/index.html" title="The Twin Clash — jeu jouable" loading="lazy" allowfullscreen></iframe>
             <button type="button" class="proj-game-overlay"><span>Cliquer pour activer le jeu et les commandes</span></button>
           </div>
-          <p>Cliquez sur le jeu pour l'activer et lui donner le focus clavier (tant qu'il n'est pas activé, les flèches font défiler la page), puis choisissez <strong>VS BOT</strong> ou <strong>VS JOUEUR</strong> dans le menu.</p>
+          <p>Cliquez sur le jeu pour l'activer et lui donner le focus clavier (tant qu'il n'est pas activé, les flèches font défiler la page), puis choisissez <strong>MODE HISTOIRE</strong>, <strong>COMBAT</strong> ou <strong>SURVIE</strong> dans le menu.</p>
           <a class="proj-cta proj-game-fullscreen" href="../jeux/TheTwinClash/index.html" target="_blank" rel="noopener">Ouvrir le jeu en plein écran <span>↗</span></a>
 
           <h2 id="commandes">Commandes</h2>
+          <p><strong>Combat et Histoire (actes I et III)</strong></p>
           <table class="proj-keys">
-            <tr><th>Action</th><th>Joueur 1 (Adèle)</th><th>Joueur 2 (Héloïse)</th></tr>
-            <tr><td>Déplacement</td><td><code>←</code> <code>→</code></td><td><code>Q</code> <code>D</code></td></tr>
-            <tr><td>Sauter / s'accroupir</td><td><code>↑</code> / <code>↓</code></td><td><code>Z</code> / <code>S</code></td></tr>
-            <tr><td>Coup de poing</td><td><code>A</code></td><td><code>T</code></td></tr>
-            <tr><td>Coup de pied</td><td><code>Z</code></td><td><code>Y</code></td></tr>
-            <tr><td>Attaque spéciale (3 s)</td><td><code>E</code></td><td><code>U</code></td></tr>
-            <tr><td>Dash (1 s)</td><td><code>Q</code></td><td><code>H</code></td></tr>
+            <tr><th>Action</th><th>Clavier</th><th>Mobile</th></tr>
+            <tr><td>Déplacement</td><td><code>←</code> <code>→</code></td><td>Joystick gauche</td></tr>
+            <tr><td>Sauter / s'accroupir</td><td><code>↑</code> / <code>↓</code></td><td>Joystick gauche</td></tr>
+            <tr><td>Coup de poing</td><td><code>A</code></td><td>Bouton POING</td></tr>
+            <tr><td>Coup de pied</td><td><code>Z</code></td><td>Bouton PIED</td></tr>
+            <tr><td>Attaque spéciale (3 s)</td><td><code>E</code></td><td>Bouton SPÉ</td></tr>
+            <tr><td>Dash (1 s)</td><td><code>Q</code></td><td>Bouton DASH</td></tr>
           </table>
-          <p>En mode VS BOT, seul le joueur 1 est contrôlé.</p>
+          <p><strong>Survie et acte II</strong></p>
+          <table class="proj-keys">
+            <tr><th>Action</th><th>Clavier / souris</th><th>Mobile</th></tr>
+            <tr><td>Déplacement</td><td>Flèches ou <code>Z</code> <code>Q</code> <code>S</code> <code>D</code></td><td>Joystick gauche</td></tr>
+            <tr><td>Viser</td><td>Souris</td><td>Joystick droit</td></tr>
+            <tr><td>Tirer</td><td>Clic ou <code>ESPACE</code></td><td>Joystick droit (tir continu)</td></tr>
+          </table>
+          <p>Dans les dialogues, <code>ESPACE</code>, <code>ENTRÉE</code> ou un clic passent à la réplique suivante ; <code>ÉCHAP</code> ou le bouton <strong>PASSER</strong> sautent la scène.</p>
 
-          <h2 id="jeu">Le jeu</h2>
-          <p>Deux combattantes, <strong>Adèle</strong> et <strong>Héloïse</strong>, s'affrontent dans une arène néon. Une partie dure 90 secondes : on gagne en mettant l'adversaire K.O. ou en ayant le plus de points de vie à la fin du temps.</p>
-          <p>Les coups successifs forment des <strong>combos</strong> qui augmentent les dégâts. L'attaque spéciale frappe plus fort mais a un temps de recharge plus long, et le dash permet d'esquiver. Les personnages sont animés par spritesheets (repos, course, coup, touché, K.O.), avec des effets de particules et des sons à l'impact.</p>
+          <h2 id="modes">Les modes de jeu</h2>
+          <p>Chaque combat et chaque partie de survie démarre par un compte à rebours <strong>3, 2, 1, FIGHT !</strong>.</p>
+          <p><strong>Mode Histoire.</strong> Trois actes reliés par des dialogues :</p>
+          <ul>
+            <li><strong>Acte I — Le combat forcé.</strong> Adèle affronte Héloïse, qui se retient, pendant 45 secondes. Il faut tenir sans qu'aucune des deux ne tombe.</li>
+            <li><strong>Acte II — Le spectacle doit continuer.</strong> Vue du dessus : trois vagues de 8, 12 puis 16 ennemis. Héloïse suit Adèle et tire seule. Si une sœur tombe, c'est perdu.</li>
+            <li><strong>Acte III — Le dernier combat.</strong> Le père, boss final, affronte les deux sœurs. Pas de chronomètre : on gagne en le mettant K.O.</li>
+          </ul>
+          <p>En cas de défaite, l'écran Game Over propose de rejouer directement l'étape perdue.</p>
+          <p><strong>Combat.</strong> Adèle contre le bot Héloïse, 90 secondes : victoire par K.O. ou aux points de vie. Les coups successifs forment des combos qui augmentent les dégâts.</p>
+          <p><strong>Survie.</strong> Même gameplay que l'acte II, mais les vagues sont infinies : elles deviennent plus nombreuses, plus rapides et plus résistantes, et les ennemis accélèrent avec le temps. Ils explosent au contact et retirent un quart de vie. L'écran de fin indique la vague atteinte.</p>
 
-          <h2 id="bot">Le bot</h2>
-          <p>Le bot adverse enchaîne plusieurs comportements : s'approcher, attaquer en combos, lancer une attaque lourde, dasher et esquiver. Le joueur est piloté par une machine à états (repos, course, attaque, étourdi, dash, spécial), partagée avec le bot via une classe <code>Fighter</code> commune.</p>
+          <h2 id="ia">Le bot et le boss</h2>
+          <p>Héloïse, pilotée par un bot, approche, attaque en combos, lance une attaque lourde, dashe et esquive. Le joueur, le bot et le boss partagent une classe <code>Fighter</code> commune et une machine à états (repos, course, attaque, coup de pied, étourdi, dash, spécial).</p>
+          <p>Le père est un <code>Boss</code> qui hérite du bot : 250 points de vie, une taille plus grande, et trois phases selon sa santé. À chaque phase il attaque plus vite, se déplace plus vite et frappe plus fort, et déclenche des répliques de dialogue en plein combat.</p>
+
+          <h2 id="mobile">Mobile et plein écran</h2>
+          <p>Sur appareil tactile, le jeu affiche automatiquement un joystick flottant et des boutons d'action (multi-touch : on peut déplacer et frapper en même temps). Le canvas occupe tout l'écran, et un bouton en haut à droite bascule en plein écran, avec verrouillage en paysage quand le navigateur le permet. Sur iPhone, Safari n'autorise pas le plein écran d'une page web, le bouton est donc masqué.</p>
+
+          <h2 id="son">Son et dialogues</h2>
+          <p>Chaque mode a sa musique (menu et victoire, combat, boss, intro de l'acte I), complétée par des ambiances de public pendant les dialogues. Les dialogues sont accompagnés de <strong>voix synthétisées</strong> générées avec Web Audio : chaque personnage a son timbre et sa hauteur (Adèle claire, Héloïse aiguë, le père grave et rugueux). Pendant les combats, des sous-titres affichent des répliques déclenchées au fil de l'action.</p>
 
           <h2 id="code">Organisation du code</h2>
-          <p>Le projet est découpé en modules JavaScript : scènes (<code>Boot</code>, <code>Preload</code>, <code>Menu</code>, <code>Game</code>, <code>Hud</code>, <code>GameOver</code>, <code>GameWin</code>), entités (<code>Fighter</code>, <code>Player</code>, <code>Player2</code>, <code>Bot</code>) et interface (<code>HealthBar</code>).</p>
+          <p>Le projet est découpé en modules JavaScript :</p>
+          <ul>
+            <li><strong>Scènes</strong> : <code>Boot</code>, <code>Preload</code>, <code>Menu</code>, <code>Game</code> et <code>Hud</code> (combat d'arène), <code>Shooter</code> (survie et acte II), <code>Dialogue</code>, <code>StoryEnd</code>, <code>GameOver</code>, <code>GameWin</code>.</li>
+            <li><strong>Entités</strong> : <code>Fighter</code>, <code>Player</code>, <code>Bot</code>, <code>Boss</code>.</li>
+            <li><strong>Interface</strong> : <code>HealthBar</code>, <code>Barks</code>, <code>DialogueVoice</code>, <code>TouchControls</code>, <code>Countdown</code>.</li>
+            <li><strong>Scénario</strong> : <code>storyScript.js</code> décrit l'histoire comme une suite d'étapes (dialogue, combat, shooter, fin), avec pour chacune sa musique et son ambiance. Ajouter une scène revient à ajouter une entrée dans ce fichier.</li>
+          </ul>
         </article>
 
       </div>
