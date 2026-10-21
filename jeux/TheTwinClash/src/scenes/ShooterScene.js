@@ -157,9 +157,9 @@ export default class ShooterScene extends Phaser.Scene {
     else if (side === 2) { x = Phaser.Math.Between(v.left, v.right); y = v.top - 30; }
     else { x = Phaser.Math.Between(v.left, v.right); y = v.bottom + 30; }
 
-    const e = this.enemies.create(x, y, 'heloise_fighter').setScale(0.4).setTint(0x7777aa).setDepth(9);
-    e.body.setSize(100, 190, true);
-    e.play('heloise_idle');
+    const e = this.enemies.create(x, y, 'enemie_fighter').setScale(0.8).setDepth(9);
+    e.body.setSize(90, 110, true);
+    e.play('enemie_walk');
     e.hp = wave.hp;
     e.speed = wave.speed * Phaser.Math.FloatBetween(0.85, 1.2);
     e.nextHit = 0;
@@ -291,7 +291,7 @@ export default class ShooterScene extends Phaser.Scene {
     bullet.destroy();
     enemy.hp--;
     enemy.setTintFill(0xffffff);
-    this.time.delayedCall(60, () => { if (enemy.active) enemy.setTint(0x7777aa); });
+    this.time.delayedCall(60, () => { if (enemy.active) enemy.clearTint(); });
     if (enemy.hp <= 0) {
       this.sound.play('hit', { volume: 0.4 });
       enemy.destroy();

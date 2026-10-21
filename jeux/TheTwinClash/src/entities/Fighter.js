@@ -35,7 +35,14 @@ export default class Fighter extends Phaser.Physics.Arcade.Sprite {
     this.isAlive = false;
     this.setVelocity(0);
     this.setState('dead');
-    this.play(this.texture.key.includes('player') ? 'player_death' : 'bot_death');
+    const key = this.texture ? this.texture.key : '';
+    if (this.animPrefix === 'pere' || key.includes('pere')) {
+      this.play('boss_death');
+    } else if (this.animPrefix === 'adele' || key.includes('adele')) {
+      this.play('player_death');
+    } else {
+      this.play('bot_death');
+    }
     this.setTint(0x666666);
   }
 

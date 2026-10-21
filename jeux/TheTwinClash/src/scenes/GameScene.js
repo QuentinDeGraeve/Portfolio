@@ -44,16 +44,17 @@ export default class GameScene extends Phaser.Scene {
         this.player.x = 220;
         this.ally = new Bot(this, 110, 420, this.particles);
         this.ally.damageScale = 0.8;
-        this.bot = new Boss(this, 780, 405, this.particles);
+        this.bot = new Boss(this, 780, 413, this.particles);
         this.noTimer = true;
         hudNames = { player: 'ADÈLE', bot: 'LE PÈRE', ally: 'HÉLOÏSE' };
         this.time.delayedCall(800, () => this.barks.say(BARKS.act3[1]));
       }
     } else {
-      // Player vs Bot mode
+      // Mode Combat : Adèle vs Héloïse
       this.player = new Player(this, 180, 420, this.particles);
       this.bot = new Bot(this, 760, 420, this.particles);
       this.displayMode = 'BOT';
+      hudNames = { player: 'ADÈLE', bot: 'HÉLOÏSE' };
     }
 
     // Joystick + boutons d'action sur mobile
@@ -123,27 +124,44 @@ export default class GameScene extends Phaser.Scene {
 
   syncAnimations() {
     // player
-    if (!this.player.isAlive) return;
-    const pCurrentAnim = this.player.anims.currentAnim?.key;
+    if (this.player && this.player.isAlive) {
+      const p = this.player;
+      const pAnim = p.anims.currentAnim?.key;
+      
+      if (p.state === 'idle' && pAnim !== 'adele_idle') p.play('adele_idle', true);
+      else if (p.state === 'run' && pAnim !== 'adele_walk') p.play('adele_walk', true);
+      else if (p.state === 'attack' && pAnim !== 'adele_punch') p.play('adele_punch', true);
+      else if (p.state === 'kick' && pAnim !== 'adele_kick') p.play('adele_kick', true);
+      else if (p.state === 'jump' && pAnim !== 'adele_jump') p.play('adele_jump', true);
+      else if (p.state === 'dash' && pAnim !== 'adele_dash') p.play('adele_dash', true);
+      else if (p.state === 'special' && pAnim !== 'adele_special_move') p.play('adele_special_move', true);
+      else if (p.state === 'stun' && pAnim !== 'adele_hurt_block') p.play('adele_hurt_block', true);
+    }
     
-    if (this.player.state === 'idle' && pCurrentAnim !== 'adele_idle') this.player.play('adele_idle', true);
-    else if (this.player.state === 'run' && pCurrentAnim !== 'adele_walk') this.player.play('adele_walk', true);
-    else if (this.player.state === 'attack' && pCurrentAnim !== 'adele_punch') this.player.play('adele_punch', true);
-    else if (this.player.state === 'kick' && pCurrentAnim !== 'adele_kick') this.player.play('adele_kick', true);
-    else if (this.player.state === 'jump' && pCurrentAnim !== 'adele_jump') this.player.play('adele_jump', true);
-    else if (this.player.state === 'dash' && pCurrentAnim !== 'adele_dash') this.player.play('adele_dash', true);
-    else if (this.player.state === 'special' && pCurrentAnim !== 'adele_special_move') this.player.play('adele_special_move', true);
+    // bot / boss
+    this.syncBotAnim(this.bot);
+
+    // ally (Héloïse in Act III)
+    if (this.ally) {
+      this.syncBotAnim(this.ally);
+    }
+  }
+
+  syncBotAnim(bot) {
+    if (!bot || !bot.isAlive) return;
+    const prefix = bot.animPrefix || 'heloise';
+    const currentAnim = bot.anims.currentAnim?.key;
     
-    // bot
-    if (!this.bot.isAlive) return;
-    const bCurrentAnim = this.bot.anims.currentAnim?.key;
-    
-    if (this.bot.state === 'idle' && bCurrentAnim !== 'heloise_idle') this.bot.play('heloise_idle', true);
-    else if (this.bot.state === 'run' && bCurrentAnim !== 'heloise_walk') this.bot.play('heloise_walk', true);
-    else if (this.bot.state === 'attack' && bCurrentAnim !== 'heloise_punch') this.bot.play('heloise_punch', true);
-    else if (this.bot.state === 'kick' && bCurrentAnim !== 'heloise_kick') this.bot.play('heloise_kick', true);
-    else if (this.bot.state === 'jump' && bCurrentAnim !== 'heloise_jump') this.bot.play('heloise_jump', true);
-    else if (this.bot.state === 'dash' && bCurrentAnim !== 'heloise_dash') this.bot.play('heloise_dash', true);
+    if (bot.state === 'idle' && currentAnim !== `${prefix}_idle`) bot.play(`${prefix}_idle`, true);
+    else if (bot.state === 'run' && currentAnim !== `${prefix}_walk`) bot.play(`${prefix}_walk`, true);
+    else if (bot.state === 'attack' && currentAnim !== `${prefix}_punch`) bot.play(`${prefix}_punch`, true);
+    else if (bot.state === 'kick' && currentAnim !== `${prefix}_kick`) bot.play(`${prefix}_kick`, true);
+    else if (bot.state === 'jump' && currentAnim !== `${prefix}_jump`) bot.play(`${prefix}_jump`, true);
+    else if (bot.state === 'dash' && currentAnim !== `${prefix}_dash`) bot.play(`${prefix}_dash`, true);
+    else if (bot.state === 'stun') {
+      const hurtKey = this.anims.exists(`${prefix}_hurt_block`) ? `${prefix}_hurt_block` : `${prefix}_hurt`;
+      if (this.anims.exists(hurtKey) && currentAnim !== hurtKey) bot.play(hurtKey, true);
+    }
   }
 
   endStory() {
@@ -160,7 +178,10 @@ export default class GameScene extends Phaser.Scene {
       this.time.delayedCall(this.story.act === 1 ? 800 : 1500, () => runStep(this, step.next));
     } else {
       this.time.delayedCall(300, () => {
-        this.scene.start('GameOver', { retry: stepTarget(this.story.step) });
+        this.scene.start('GameOver', {
+          retry: stepTarget(this.story.step),
+          message: this.story.act === 1 ? 'L\'une des sœurs est tombée au combat...' : 'Le Père l\'a emporté...'
+        });
       });
     }
   }
@@ -176,19 +197,19 @@ export default class GameScene extends Phaser.Scene {
     if (this.gameTime <= 0) {
       // Time's up - determine winner by health
       if (this.player.health > this.bot.health) {
-        this.time.delayedCall(300, () => { this.scene.start('GameWin'); });
+        this.time.delayedCall(300, () => { this.scene.start('GameWin', { message: 'Adèle l\'emporte aux points !' }); });
       } else if (this.bot.health > this.player.health) {
-        this.time.delayedCall(300, () => { this.scene.start('GameOver'); });
+        this.time.delayedCall(300, () => { this.scene.start('GameOver', { message: 'Héloïse l\'emporte aux points !' }); });
       } else {
-        // Tie - player wins by default
-        this.time.delayedCall(300, () => { this.scene.start('GameWin'); });
+        // Tie
+        this.time.delayedCall(300, () => { this.scene.start('GameWin', { message: 'Égalité parfaite !' }); });
       }
     } else if (this.player.isAlive) {
       // Player wins
-      this.time.delayedCall(300, () => { this.scene.start('GameWin'); });
+      this.time.delayedCall(300, () => { this.scene.start('GameWin', { message: 'Adèle a vaincu Héloïse !' }); });
     } else {
       // Player dies -> game over
-      this.time.delayedCall(300, () => { this.scene.start('GameOver'); });
+      this.time.delayedCall(300, () => { this.scene.start('GameOver', { message: 'Héloïse a vaincu Adèle !' }); });
     }
   }
 }

@@ -1,7 +1,7 @@
 import Fighter from './Fighter.js';
 export default class Bot extends Fighter {
-  constructor(scene, x, y, particles=null) {
-    super(scene, x, y, 'heloise_fighter');
+  constructor(scene, x, y, particles = null, texture = 'heloise_fighter') {
+    super(scene, x, y, texture);
     this.particles = particles;
     this.attackTimer = 0;
     this.attackCooldown = 800;
@@ -10,6 +10,9 @@ export default class Bot extends Fighter {
     this.dashTimer = 0;
     this.evadeTimer = 0;
     this.comboStage = 0;
+    // Préfixe d'animation : peut être surchargé par les sous-classes (ex: Boss → 'pere')
+    this.animPrefix = texture === 'pere_fighter' ? 'pere' : 'heloise';
+    this.play(`${this.animPrefix}_idle`, true);
   }
 
   update(player) {
@@ -31,17 +34,17 @@ export default class Bot extends Fighter {
       if (dx > 160) {
         const dir = this.x < player.x ? 1 : -1;
         this.setVelocityX(dir * this.speed * 0.6);
-        this.play('heloise_walk', true);
+        this.play(`${this.animPrefix}_walk`, true);
         this.setState('run');
       } else if (dx > this.attackRange + 20) {
         // short horizontal approach
         const dir = this.x < player.x ? 1 : -1;
         this.setVelocityX(dir * this.speed * 0.4);
-        this.play('heloise_walk', true);
+        this.play(`${this.animPrefix}_walk`, true);
         this.setState('run');
       } else {
         this.setVelocityX(0);
-        this.play('heloise_idle', true);
+        this.play(`${this.animPrefix}_idle`, true);
         this.setState('idle');
       }
     }
@@ -70,7 +73,7 @@ export default class Bot extends Fighter {
 
   doQuick(player) {
     this.setState('attack', 250);
-    this.play('heloise_punch', true);
+    this.play(`${this.animPrefix}_punch`, true);
     this.scene.time.delayedCall(120, () => {
       if (Math.abs(this.x - player.x) <= this.attackRange) { player.takeDamage(6 * this.damageScale, true); this.spawnHit(player); }
     });
@@ -78,7 +81,7 @@ export default class Bot extends Fighter {
 
   doCombo(player) {
     this.setState('attack', 450);
-    this.play('heloise_punch', true);
+    this.play(`${this.animPrefix}_punch`, true);
     // two quick hits
     this.scene.time.delayedCall(100, () => { if (Math.abs(this.x - player.x) <= this.attackRange) { player.takeDamage(6 * this.damageScale, true); this.spawnHit(player); } });
     this.scene.time.delayedCall(260, () => { if (Math.abs(this.x - player.x) <= this.attackRange) { player.takeDamage(5 * this.damageScale, true); this.spawnHit(player); } });
@@ -86,7 +89,7 @@ export default class Bot extends Fighter {
 
   doHeavy(player) {
     this.setState('attack', 500);
-    this.play('heloise_punch', true);
+    this.play(`${this.animPrefix}_kick`, true);
     this.scene.time.delayedCall(260, () => {
       if (Math.abs(this.x - player.x) <= this.attackRange) { player.takeDamage(14 * this.damageScale, true); this.spawnHit(player, true); }
     });
@@ -97,6 +100,7 @@ export default class Bot extends Fighter {
     const toward = (this.health > this.maxHealth * 0.35);
     const dir = toward ? (this.x < player.x ? 1 : -1) : (this.x < player.x ? -1 : 1);
     this.setState('dash', 600);
+    this.play(`${this.animPrefix}_dash`, true);
     this.scene.sound.play('dash');
     const dashDistance = 350; // pixels to dash
     

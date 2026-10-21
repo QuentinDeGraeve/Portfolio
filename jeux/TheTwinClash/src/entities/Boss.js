@@ -3,14 +3,19 @@ import Bot from './Bot.js';
 // Le père : boss final de l'acte III, 3 phases selon sa santé.
 export default class Boss extends Bot {
   constructor(scene, x, y, particles = null) {
-    super(scene, x, y, particles);
-    this.setScale(1.3);
-    this.setTint(0x8a4a4a);
+    super(scene, x, y, particles, 'pere_fighter');
+    this.animPrefix = 'pere';
+    this.clearTint();
+    this.setScale(2.2);
+    if (this.body) {
+      this.body.setSize(60, 115, true);
+    }
     this.health = 250; this.maxHealth = 250;
-    this.attackRange = 90;
+    this.attackRange = 100;
     this.attackCooldown = 1100;
     this.damageScale = 0.7;
     this.phase = 1;
+    this.play('pere_idle', true);
   }
 
   update(target) {
@@ -27,10 +32,16 @@ export default class Boss extends Bot {
   applyPhase() {
     if (this.phase === 2) {
       this.attackCooldown = 800; this.speed = 260; this.damageScale = 0.9;
-      this.setTint(0xb04040);
     } else if (this.phase === 3) {
       this.attackCooldown = 600; this.speed = 320; this.damageScale = 1.1;
-      this.setTint(0xd02020);
     }
+  }
+
+  die() {
+    this.isAlive = false;
+    this.setVelocity(0);
+    this.setState('dead');
+    this.play('boss_death');
+    this.setTint(0x666666);
   }
 }

@@ -5,8 +5,9 @@ export default class GameWin extends Phaser.Scene {
     if (this.sound) this.sound.stopAll();
 
     const w = this.scale.width, h = this.scale.height;
-    this.add.text(w/2, h/2 - 40, 'YOU WIN!', { fontSize: '48px', color: '#44ff88' }).setOrigin(0.5);
-    this.add.text(w/2, h/2 + 10, 'The bot has been defeated!', { fontSize: '20px' }).setOrigin(0.5);
+    this.add.text(w/2, h/2 - 40, 'VICTOIRE !', { fontSize: '48px', color: '#44ff88' }).setOrigin(0.5);
+    const msg = data && data.message ? data.message : 'Adèle a remporté le combat !';
+    this.add.text(w/2, h/2 + 10, msg, { fontSize: '20px', color: '#ffffff' }).setOrigin(0.5);
 
     // play game win music if available
     if (this.cache.audio.exists('bgmGameWin')) {

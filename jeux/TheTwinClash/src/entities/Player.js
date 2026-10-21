@@ -12,6 +12,7 @@ export default class Player extends Fighter {
     this.lastKick = 0; this.kickCooldown = 400;
     this.comboWindow = 500; this.comboCount = 0; this.comboTimer = 0;
     this.particles = particles;
+    this.animPrefix = 'adele';
     this.facing = 'right';
     this.setScale(1);
     this.play('adele_idle');

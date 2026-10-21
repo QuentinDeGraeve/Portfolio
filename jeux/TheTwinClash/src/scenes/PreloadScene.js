@@ -8,6 +8,8 @@ export default class PreloadScene extends Phaser.Scene {
     // spritesheets (frames: 6 frames each, frame size 96x128)
     this.load.spritesheet('adele_fighter', 'assets/sprites/spritesheets/adele_fighter_spritesheet.png', { frameWidth: 256, frameHeight: 256, willReadFrequently: true });
     this.load.spritesheet('heloise_fighter', 'assets/sprites/spritesheets/heloise_fighter_spritesheet.png', { frameWidth: 256, frameHeight: 256, willReadFrequently: true });
+    this.load.spritesheet('pere_fighter',   'assets/sprites/spritesheets/spritesheetPere.png',   { frameWidth: 150, frameHeight: 150, willReadFrequently: true });
+    this.load.spritesheet('enemie_fighter', 'assets/sprites/spritesheets/spritesheetenemie.png', { frameWidth: 150, frameHeight: 150, willReadFrequently: true });
 
     // small hit/spark sprite
     this.load.image('hit', 'assets/sprites/hit.png');
@@ -239,6 +241,122 @@ export default class PreloadScene extends Phaser.Scene {
     this.anims.create({ key: 'player_death', frames: this.anims.generateFrameNumbers('adele_fighter', { start: 5, end: 5 }), frameRate: 1, repeat: 0 });
     this.anims.create({ key: 'bot_death', frames: this.anims.generateFrameNumbers('heloise_fighter', { start: 5, end: 5 }), frameRate: 1, repeat: 0 });
 
+    // --- Animations du boss (père) ---
+    // Ligne 0 (frames 0-3) : Idle
+    this.anims.create({
+      key: 'pere_idle',
+      frames: this.anims.generateFrameNumbers('pere_fighter', { start: 0, end: 3 }),
+      frameRate: 5,
+      repeat: -1
+    });
+
+    // Ligne 9 (frames 36-39) : Walk
+    this.anims.create({
+      key: 'pere_walk',
+      frames: this.anims.generateFrameNumbers('pere_fighter', { start: 36, end: 39 }),
+      frameRate: 8,
+      repeat: 0
+    });
+
+    // Ligne 3 (frames 12-15) : Punch
+    this.anims.create({
+      key: 'pere_punch',
+      frames: [
+        { key: 'pere_fighter', frame: 12 },
+        { key: 'pere_fighter', frame: 13 },
+        { key: 'pere_fighter', frame: 14 },
+        { key: 'pere_fighter', frame: 15 }
+      ],
+      frameRate: 12,
+      repeat: 0
+    });
+
+    // Lignes 4-5 (frames 18, 19, 21, 22) : Kick
+    this.anims.create({
+      key: 'pere_kick',
+      frames: [
+        { key: 'pere_fighter', frame: 18 },
+        { key: 'pere_fighter', frame: 19 },
+        { key: 'pere_fighter', frame: 21 },
+        { key: 'pere_fighter', frame: 22 }
+      ],
+      frameRate: 10,
+      repeat: 0
+    });
+
+    // Lignes 10 & 4 (frames 41, 42, 43, 16, 17) : Special
+    this.anims.create({
+      key: 'pere_special',
+      frames: [
+        { key: 'pere_fighter', frame: 41 },
+        { key: 'pere_fighter', frame: 42 },
+        { key: 'pere_fighter', frame: 43 },
+        { key: 'pere_fighter', frame: 16 },
+        { key: 'pere_fighter', frame: 17 }
+      ],
+      frameRate: 10,
+      repeat: 0
+    });
+
+    // Lignes 5 & 7 (frames 23, 28) : Hurt / Block
+    this.anims.create({
+      key: 'pere_hurt',
+      frames: [
+        { key: 'pere_fighter', frame: 23 },
+        { key: 'pere_fighter', frame: 28 }
+      ],
+      frameRate: 8,
+      repeat: 0
+    });
+
+    // Lignes 8 & 6 (frames 34, 26, 22) : Jump
+    this.anims.create({
+      key: 'pere_jump',
+      frames: [
+        { key: 'pere_fighter', frame: 34 },
+        { key: 'pere_fighter', frame: 26 },
+        { key: 'pere_fighter', frame: 22 }
+      ],
+      frameRate: 8,
+      repeat: 0
+    });
+
+    // Ligne 10 (frames 40-43) : Dash
+    this.anims.create({
+      key: 'pere_dash',
+      frames: this.anims.generateFrameNumbers('pere_fighter', { start: 40, end: 43 }),
+      frameRate: 12,
+      repeat: 0
+    });
+
+    // Death (frames 23, 28, 29)
+    this.anims.create({
+      key: 'boss_death',
+      frames: [
+        { key: 'pere_fighter', frame: 23 },
+        { key: 'pere_fighter', frame: 28 },
+        { key: 'pere_fighter', frame: 29 }
+      ],
+      frameRate: 5,
+      repeat: 0
+    });
+
+    // --- Animations de l'ennemi (mode Survie) ---
+    // Ligne 0 (frames 0-3) : Idle
+    this.anims.create({
+      key: 'enemie_idle',
+      frames: this.anims.generateFrameNumbers('enemie_fighter', { start: 0, end: 3 }),
+      frameRate: 6,
+      repeat: -1
+    });
+
+    // Ligne 1 (frames 4-7) : Walk
+    this.anims.create({
+      key: 'enemie_walk',
+      frames: this.anims.generateFrameNumbers('enemie_fighter', { start: 4, end: 7 }),
+      frameRate: 8,
+      repeat: -1
+    });
 
     this.scene.start('Menu');
   }
