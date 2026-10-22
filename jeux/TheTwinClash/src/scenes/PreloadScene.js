@@ -18,11 +18,17 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('bg', 'assets/sprites/images/bg.png');
     this.load.image('menu', 'assets/sprites/images/menu.png');
     this.load.image('bgRingHaut', 'assets/sprites/images/bgRingHaut.jpg');
+    this.load.image('bullet', 'assets/sprites/images/bullet.png');
+    this.load.image('adeleBullet', 'assets/sprites/images/adeleBullet.png');
+    this.load.image('heloiseBullet', 'assets/sprites/images/heloiseBullet.png');
+    this.load.spritesheet('explode', 'assets/sprites/spritesheets/explode.png', { frameWidth: 128, frameHeight: 128 });
 
     // audio
     this.load.audio('punch', 'assets/audio/sound/punch.wav');
-    this.load.audio('kick', 'assets/audio/sound/punch.wav');
+    this.load.audio('kick', 'assets/audio/sound/kick.wav');
     this.load.audio('hit', 'assets/audio/sound/hit.wav');
+    this.load.audio('explodeSound', 'assets/audio/sound/explodeSound.mp3');
+    this.load.audio('bell', 'assets/audio/sound/bell.wav');
     this.load.audio('dash', 'assets/audio/sound/dash.wav');
     this.load.audio('special', 'assets/audio/sound/special.wav');
     this.load.audio('ambArena', 'assets/audio/sound/497696__syntaxseed__fight-arena-4.wav');
@@ -39,6 +45,14 @@ export default class PreloadScene extends Phaser.Scene {
   }
 
   create() {
+
+    // Explosion des ennemis (mode shooter) : 16 frames de 128x128
+    this.anims.create({
+      key: 'explode',
+      frames: this.anims.generateFrameNumbers('explode', { start: 0, end: 15 }),
+      frameRate: 30,
+      repeat: 0
+    });
 
     // --- Création des animations pour Adèle ---
     // 1. IDLE (Repos) - Ligne 1

@@ -1,4 +1,5 @@
 import Fighter from './Fighter.js';
+
 export default class Bot extends Fighter {
   constructor(scene, x, y, particles = null, texture = 'heloise_fighter') {
     super(scene, x, y, texture);
@@ -6,40 +7,47 @@ export default class Bot extends Fighter {
     this.attackTimer = 0;
     this.attackCooldown = 800;
     this.facing = 'left';
+    this.setFlipX(true);
     this.setScale(1);
     this.dashTimer = 0;
     this.evadeTimer = 0;
-    this.comboStage = 0;
+    this.specialTimer = 0;
+    this.specialCooldown = 4500;
     // Préfixe d'animation : peut être surchargé par les sous-classes (ex: Boss → 'pere')
     this.animPrefix = texture === 'pere_fighter' ? 'pere' : 'heloise';
     this.play(`${this.animPrefix}_idle`, true);
   }
 
   update(player) {
-    if (!this.isAlive) return;
+    if (!this.isAlive || !player) return;
     this.updateState();
     const now = this.scene.time.now;
-    // Use horizontal distance so the bot stays on its Y axis (doesn't follow player's jump)
     const dx = Math.abs(this.x - player.x);
 
-    // Facing (based on X only)
+    // Orientation vers la cible
     this.facing = (this.x < player.x) ? 'right' : 'left';
     this.setFlipX(this.facing === 'left');
 
-    // Decision making (move only on X, keep Y locked)
-    if (this.state === 'idle' || this.state === 'run') {
-      // Ensure Y velocity is zero so bot stays on its original Y
+    const blockedStates = ['attack', 'kick', 'dash', 'special', 'stun', 'dead'];
+    if (!blockedStates.includes(this.state)) {
       this.setVelocityY(0);
-      // If far, approach horizontally
+
+      // Opportunité d'attaque spéciale à distance pour Héloïse
+      if (this.animPrefix === 'heloise' && dx > 180 && dx < 600 && now > this.specialTimer && Math.random() < 0.035) {
+        this.specialTimer = now + this.specialCooldown + Math.random() * 2000;
+        this.doSpecial(player);
+        return;
+      }
+
+      // Déplacement horizontal
       if (dx > 160) {
         const dir = this.x < player.x ? 1 : -1;
-        this.setVelocityX(dir * this.speed * 0.6);
+        this.setVelocityX(dir * this.speed * 0.65);
         this.play(`${this.animPrefix}_walk`, true);
         this.setState('run');
-      } else if (dx > this.attackRange + 20) {
-        // short horizontal approach
+      } else if (dx > this.attackRange + 15) {
         const dir = this.x < player.x ? 1 : -1;
-        this.setVelocityX(dir * this.speed * 0.4);
+        this.setVelocityX(dir * this.speed * 0.45);
         this.play(`${this.animPrefix}_walk`, true);
         this.setState('run');
       } else {
@@ -47,26 +55,27 @@ export default class Bot extends Fighter {
         this.play(`${this.animPrefix}_idle`, true);
         this.setState('idle');
       }
+    } else {
+      this.setVelocityX(0);
     }
 
-    // Random dash to close gap or escape if low health
-    if (now > this.dashTimer && Math.random() < 0.01) {
+    // Dash / Approche rapide ou retraite
+    if (!blockedStates.includes(this.state) && now > this.dashTimer && Math.random() < 0.012) {
       this.doDash(player);
-      this.dashTimer = now + 1500 + Math.random()*2000;
+      this.dashTimer = now + 2000 + Math.random() * 2500;
     }
 
-    // Evade when close and recently hit (use horizontal distance)
-    if (this.state !== 'stun' && dx < 60 && Math.random() < 0.02) {
+    // Esquive si très proche
+    if (this.state !== 'stun' && this.state !== 'dash' && dx < 60 && Math.random() < 0.02) {
       this.doEvade();
     }
 
-    // Attack when horizontally in range and cooldown passed (ignore vertical separation)
-    if (dx <= this.attackRange && now > this.attackTimer) {
+    // Attaques au corps à corps
+    if (!blockedStates.includes(this.state) && dx <= this.attackRange + 10 && now > this.attackTimer) {
       this.attackTimer = now + this.attackCooldown;
-      // choose attack pattern: combo, heavy, or quick
       const r = Math.random();
-      if (r < 0.2) this.doHeavy(player);
-      else if (r < 0.6) this.doCombo(player);
+      if (r < 0.25) this.doHeavy(player);
+      else if (r < 0.65) this.doCombo(player);
       else this.doQuick(player);
     }
   }
@@ -74,61 +83,130 @@ export default class Bot extends Fighter {
   doQuick(player) {
     this.setState('attack', 250);
     this.play(`${this.animPrefix}_punch`, true);
-    this.scene.time.delayedCall(120, () => {
-      if (Math.abs(this.x - player.x) <= this.attackRange) { player.takeDamage(6 * this.damageScale, true); this.spawnHit(player); }
+    if (this.scene.sound) this.scene.sound.play('punch');
+    this.scene.time.delayedCall(110, () => {
+      if (this.isInHitbox(player, 85, 75)) {
+        const hit = player.takeDamage(7 * this.damageScale, 200, 40, this.x, false);
+        if (hit) this.spawnHit(player, false);
+      }
     });
   }
 
   doCombo(player) {
     this.setState('attack', 450);
     this.play(`${this.animPrefix}_punch`, true);
-    // two quick hits
-    this.scene.time.delayedCall(100, () => { if (Math.abs(this.x - player.x) <= this.attackRange) { player.takeDamage(6 * this.damageScale, true); this.spawnHit(player); } });
-    this.scene.time.delayedCall(260, () => { if (Math.abs(this.x - player.x) <= this.attackRange) { player.takeDamage(5 * this.damageScale, true); this.spawnHit(player); } });
+    if (this.scene.sound) this.scene.sound.play('punch');
+    // Premier coup
+    this.scene.time.delayedCall(100, () => {
+      if (this.isInHitbox(player, 85, 75)) {
+        const hit = player.takeDamage(6 * this.damageScale, 200, 30, this.x, false);
+        if (hit) this.spawnHit(player, false);
+      }
+    });
+    // Deuxième coup plus appuyé
+    this.scene.time.delayedCall(250, () => {
+      if (this.isAlive && this.isInHitbox(player, 90, 80)) {
+        if (this.scene.sound) this.scene.sound.play('punch');
+        const hit = player.takeDamage(8 * this.damageScale, 300, 70, this.x, false);
+        if (hit) this.spawnHit(player, true);
+      }
+    });
   }
 
   doHeavy(player) {
-    this.setState('attack', 500);
+    this.setState('kick', 400);
     this.play(`${this.animPrefix}_kick`, true);
-    this.scene.time.delayedCall(260, () => {
-      if (Math.abs(this.x - player.x) <= this.attackRange) { player.takeDamage(14 * this.damageScale, true); this.spawnHit(player, true); }
+    if (this.scene.sound) this.scene.sound.play('kick');
+    this.scene.time.delayedCall(180, () => {
+      if (this.isInHitbox(player, 105, 80)) {
+        const hit = player.takeDamage(15 * this.damageScale, 380, 95, this.x, true);
+        if (hit) {
+          this.spawnHit(player, true);
+          if (this.scene.cameras.main) this.scene.cameras.main.shake(100, 0.004);
+        }
+      }
+    });
+  }
+
+  doSpecial(player) {
+    this.setState('special', 500);
+    this.play(`${this.animPrefix}_special_move`, true);
+    if (this.scene.sound) this.scene.sound.play('special');
+
+    if (this.particles) {
+      const aura = this.particles.createEmitter({
+        x: this.x + (this.facing === 'right' ? 30 : -30),
+        y: this.y,
+        speed: { min: -100, max: 100 },
+        lifespan: 300,
+        scale: { start: 0.9, end: 0 },
+        quantity: 8
+      });
+      this.scene.time.delayedCall(200, () => aura.stop());
+    }
+
+    this.scene.time.delayedCall(180, () => {
+      if (!this.isAlive) return;
+      if (this.scene.spawnFireball) {
+        this.scene.spawnFireball(this, 'heloiseBullet', 24 * this.damageScale, 520);
+      }
     });
   }
 
   doDash(player) {
-    // dash toward player or away if low HP
     const toward = (this.health > this.maxHealth * 0.35);
     const dir = toward ? (this.x < player.x ? 1 : -1) : (this.x < player.x ? -1 : 1);
-    this.setState('dash', 600);
+    this.setState('dash', 380);
+    this.isInvincible = true;
     this.play(`${this.animPrefix}_dash`, true);
-    this.scene.sound.play('dash');
-    const dashDistance = 350; // pixels to dash
-    
-    // Tween the position for a fixed dash distance
+    if (this.scene.sound) this.scene.sound.play('dash');
+    const dashDistance = 280;
+    const targetX = Phaser.Math.Clamp(this.x + (dir * dashDistance), 60, this.scene.scale.width - 60);
+
     this.scene.tweens.add({
       targets: this,
-      x: this.x + (dir * dashDistance),
-      duration: 600,
-      ease: 'Power2'
+      x: targetX,
+      duration: 350,
+      ease: 'Cubic.easeOut',
+      onComplete: () => {
+        this.isInvincible = false;
+        if (this.isAlive && this.state === 'dash') {
+          this.setState('idle');
+        }
+      }
     });
-    
+
     if (this.particles) {
-      const e = this.particles.createEmitter({ x: this.x, y: this.y+30, speed:{min:-20,max:20}, lifespan:200, scale:{start:0.6,end:0}, quantity:6 });
-      this.scene.time.delayedCall(350, () => e.stop());
+      const e = this.particles.createEmitter({
+        x: this.x,
+        y: this.y + 30,
+        speed: { min: -25, max: 25 },
+        lifespan: 200,
+        scale: { start: 0.6, end: 0 },
+        quantity: 5
+      });
+      this.scene.time.delayedCall(300, () => e.stop());
     }
   }
 
   doEvade() {
-    this.setState('dash', 600);
-    // quick lateral movement
+    this.setState('dash', 350);
+    this.isInvincible = true;
     const dir = Math.random() < 0.5 ? -1 : 1;
-    const evadeDistance = 250; // pixels to evade
-    
+    const evadeDistance = 220;
+    const targetX = Phaser.Math.Clamp(this.x + (dir * evadeDistance), 60, this.scene.scale.width - 60);
+
     this.scene.tweens.add({
       targets: this,
-      x: this.x + (dir * evadeDistance),
-      duration: 600,
-      ease: 'Power2'
+      x: targetX,
+      duration: 320,
+      ease: 'Cubic.easeOut',
+      onComplete: () => {
+        this.isInvincible = false;
+        if (this.isAlive && this.state === 'dash') {
+          this.setState('idle');
+        }
+      }
     });
   }
 

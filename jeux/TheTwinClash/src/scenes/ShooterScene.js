@@ -48,9 +48,6 @@ export default class ShooterScene extends Phaser.Scene {
     this.music = this.sound.add('bgmCombat', { loop: true, volume: 0.5 });
     this.music.play();
 
-    // Texture générée (balles)
-    this.makeCircleTexture('bullet', 5, 0xfff2a0);
-
     // Sœurs : placées au centre du ring dans les deux modes
     const sx = this.worldW / 2, sy = this.worldH / 2;
     this.adele = this.makeSister(sx, sy, 'adele_fighter', 'adele_idle');
@@ -280,7 +277,10 @@ export default class ShooterScene extends Phaser.Scene {
 
   shoot(from, tx, ty) {
     const ang = Phaser.Math.Angle.Between(from.x, from.y, tx, ty);
-    const b = this.bullets.create(from.x + Math.cos(ang) * 30, from.y + Math.sin(ang) * 30, 'bullet').setDepth(11);
+    const key = from === this.heloise ? 'heloiseBullet' : 'adeleBullet';
+    const b = this.bullets.create(from.x + Math.cos(ang) * 30, from.y + Math.sin(ang) * 30, key).setDepth(11);
+    b.setRotation(ang);
+    b.body.setCircle(8, 19, 0.5); // hitbox circulaire (la boîte arcade ne pivote pas avec le sprite)
     b.setVelocity(Math.cos(ang) * 520, Math.sin(ang) * 520);
     this.sound.play('punch', { volume: 0.25 });
   }
@@ -299,61 +299,17 @@ export default class ShooterScene extends Phaser.Scene {
     enemy.setTintFill(0xffffff);
     this.time.delayedCall(60, () => { if (enemy.active) enemy.clearTint(); });
     if (enemy.hp <= 0) {
-      this.sound.play('hit', { volume: 0.4 });
+      this.explode(enemy.x, enemy.y);
       enemy.destroy();
     }
   }
 
-  // Petite explosion (cercle qui s'étend + éclats) à la position donnée
+  // Explosion (sprite animé + son) à la position donnée
   explode(x, y) {
-    const ring = this.add.circle(x, y, 10, 0xff8c1a, 0.9).setDepth(12);
-    this.tweens.add({ targets: ring, scale: 4, alpha: 0, duration: 350, onComplete: () => ring.destroy() });
-    for (let i = 0; i < 10; i++) {
-      const ang = (Math.PI * 2 * i) / 10 + Phaser.Math.FloatBetween(-0.2, 0.2);
-      const dist = Phaser.Math.Between(30, 70);
-      const p = this.add.circle(x, y, Phaser.Math.Between(3, 6), i % 2 ? 0xffd34d : 0xff4d1a).setDepth(12);
-      this.tweens.add({
-        targets: p, x: x + Math.cos(ang) * dist, y: y + Math.sin(ang) * dist,
-        alpha: 0, duration: 400, onComplete: () => p.destroy()
-      });
-    }
-    this.playExplosionSound();
-  }
-
-  // Bruit d'explosion synthétisé (bruit blanc filtré + grondement grave)
-  playExplosionSound() {
-    const ctx = this.sound.context;
-    if (!ctx) { this.sound.play('hit', { volume: 0.5 }); return; }
-    const t = ctx.currentTime, dur = 0.6;
-
-    const buf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * dur), ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
-    const noise = ctx.createBufferSource();
-    noise.buffer = buf;
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(2500, t);
-    filter.frequency.exponentialRampToValueAtTime(150, t + dur);
-    const nGain = ctx.createGain();
-    nGain.gain.setValueAtTime(0.7, t);
-    nGain.gain.exponentialRampToValueAtTime(0.001, t + dur);
-    noise.connect(filter);
-    filter.connect(nGain);
-    nGain.connect(ctx.destination);
-    noise.start(t);
-
-    const osc = ctx.createOscillator();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(110, t);
-    osc.frequency.exponentialRampToValueAtTime(30, t + dur);
-    const oGain = ctx.createGain();
-    oGain.gain.setValueAtTime(0.8, t);
-    oGain.gain.exponentialRampToValueAtTime(0.001, t + dur);
-    osc.connect(oGain);
-    oGain.connect(ctx.destination);
-    osc.start(t);
-    osc.stop(t + dur);
+    const fx = this.add.sprite(x, y, 'explode').setDepth(12);
+    fx.play('explode');
+    fx.once('animationcomplete', () => fx.destroy());
+    this.sound.play('explodeSound', { volume: 0.5 });
   }
 
   onEnemyTouch(enemy, sister) {

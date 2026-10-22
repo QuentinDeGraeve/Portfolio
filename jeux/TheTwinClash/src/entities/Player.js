@@ -135,50 +135,70 @@ export default class Player extends Fighter {
     this.play('adele_punch', true);
     this.scene.sound.play('punch');
     // hit timing slightly delayed to appear realistic
-    this.scene.time.delayedCall(120, () => {
-      if (target && this.isInRange(target)) {
-        const dmg = 8 + (this.comboCount - 1) * 4;
-        target.takeDamage(dmg, true);
-        this.spawnHit(target);
+    this.scene.time.delayedCall(110, () => {
+      if (target && this.isInHitbox(target, 90, 80)) {
+        const isFinisher = this.comboCount >= 3;
+        const dmg = (8 + (this.comboCount - 1) * 4) * this.damageScale;
+        const knockback = isFinisher ? 120 : (30 + this.comboCount * 15);
+        const hitSuccess = target.takeDamage(dmg, isFinisher ? 350 : 200, knockback, this.x, isFinisher);
+        if (hitSuccess) {
+          this.spawnHit(target, isFinisher);
+          if (isFinisher && this.scene.cameras.main) {
+            this.scene.cameras.main.shake(120, 0.005);
+          }
+        }
       }
     });
   }
 
   doKick(target) {
     if (!this.isAlive) return;
-    this.setState('kick', 300);
+    this.setState('kick', 320);
     this.play('adele_kick', true);
     this.scene.sound.play('kick');
-    this.scene.time.delayedCall(140, () => {
-      if (target && this.isInRange(target)) {
-        target.takeDamage(12, true);
-        this.spawnHit(target);
+    this.scene.time.delayedCall(130, () => {
+      if (target && this.isInHitbox(target, 110, 85)) {
+        const dmg = 14 * this.damageScale;
+        const hitSuccess = target.takeDamage(dmg, 300, 85, this.x, false);
+        if (hitSuccess) {
+          this.spawnHit(target, false);
+        }
       }
     });
   }
 
   doDash() {
-    this.setState('dash', 600);
+    this.setState('dash', 380);
+    this.isInvincible = true;
     this.scene.sound.play('dash');
     const dir = (this.facing === 'right') ? 1 : -1;
-    const dashDistance = 350; // pixels to dash
-    
-    // Tween the position for a fixed dash distance
+    const dashDistance = 300; // pixels to dash
+    const targetX = Phaser.Math.Clamp(this.x + (dir * dashDistance), 60, this.scene.scale.width - 60);
+
+    // Tween the position for a responsive dash
     this.scene.tweens.add({
       targets: this,
-      x: this.x + (dir * dashDistance),
-      duration: 600,
-      ease: 'Power2'
+      x: targetX,
+      duration: 350,
+      ease: 'Cubic.easeOut',
+      onComplete: () => {
+        this.isInvincible = false;
+        if (this.isAlive && this.state === 'dash') {
+          this.setState('idle');
+        }
+      }
     });
     
     if (this.particles) {
-      const emitter = this.particles.createEmitter({ 
+      const emitter = this.particles.createEmitter({
         x: this.x,
-         y: this.y + 30, speed: { min: -20, max: 20 },
-         lifespan: 200, scale: { start: 0.5, end: 0 },
-         quantity: 4 
+        y: this.y + 30,
+        speed: { min: -40, max: 40 },
+        lifespan: 200,
+        scale: { start: 0.7, end: 0 },
+        quantity: 5
       });
-      this.scene.time.delayedCall(350, () => { emitter.stop(); });
+      this.scene.time.delayedCall(300, () => { emitter.stop(); });
     }
   }
 
@@ -202,19 +222,28 @@ export default class Player extends Fighter {
   }
 
   doSpecial(target) {
-    this.setState('special', 600);
+    this.setState('special', 500);
     this.play('adele_special_move', true);
     this.scene.sound.play('special');
-    this.scene.time.delayedCall(250, () => {
-      if (target) {
-        const dist = Phaser.Math.Distance.Between(this.x, this.y, target.x, target.y);
-        if (dist < this.attackRange + 30) {
-          target.takeDamage(22, true);
-          this.spawnHit(target, true);
-        }
-      }
-      if (this.particles) {
-        this.particles.createEmitter({ x: this.x + (this.facing === 'right' ? 40 : -40), y: this.y, speed: { min: -200, max: 200 }, lifespan: 400, scale: { start: 1, end: 0 }, quantity: 12 }).explode(12, this.x, this.y);
+
+    // Aura / flash au déclenchement
+    if (this.particles) {
+      const aura = this.particles.createEmitter({
+        x: this.x + (this.facing === 'right' ? 30 : -30),
+        y: this.y,
+        speed: { min: -120, max: 120 },
+        lifespan: 350,
+        scale: { start: 1, end: 0 },
+        quantity: 10
+      });
+      this.scene.time.delayedCall(200, () => aura.stop());
+    }
+
+    // Tir du projectile Boule de feu (adeleBullet)
+    this.scene.time.delayedCall(180, () => {
+      if (!this.isAlive) return;
+      if (this.scene.spawnFireball) {
+        this.scene.spawnFireball(this, 'adeleBullet', 26 * this.damageScale, 550);
       }
     });
   }

@@ -16,7 +16,17 @@ export default function runCountdown(scene, onDone) {
       scene.tweens.add({
         targets: text, scale: 1, duration: 250, ease: 'Back.Out'
       });
-      scene.sound.play(last ? 'special' : 'hit', { volume: 0.4 });
+      if (last) {
+        if (scene.sound.get('bell') || scene.cache.audio.exists('bell')) {
+          scene.sound.play('bell', { volume: 0.6 });
+        } else {
+          scene.sound.play('special', { volume: 0.4 });
+        }
+      } else {
+        if (scene.sound.get('hit') || scene.cache.audio.exists('hit')) {
+          scene.sound.play('hit', { volume: 0.45 });
+        }
+      }
       if (last) {
         onDone();
         scene.tweens.add({ targets: text, alpha: 0, duration: 500, delay: 500, onComplete: () => text.destroy() });
