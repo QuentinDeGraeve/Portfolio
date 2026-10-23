@@ -13,6 +13,10 @@ export default class ResultScene extends Phaser.Scene {
       this.sound.play('bgmResult', { loop: true, volume: 0.6 });
     }
 
+    if (this.textures.exists('bg')) {
+      this.add.image(w/2, h/2, 'bg').setDisplaySize(w, h);
+    }
+
     const stroke = { stroke: '#000000', strokeThickness: 6 };
     this.add.text(w/2, h/2 - 80, win ? 'GAGNÉ !' : 'PERDU...', { fontSize: '48px', fontStyle: 'bold', color: win ? '#44ff88' : '#ff4444', ...stroke }).setOrigin(0.5);
     this.add.text(w/2, h/2 - 20, `Score : ${score}/${total}`, { fontSize: '28px', fontStyle: 'bold', color: '#ffffff', ...stroke }).setOrigin(0.5);

@@ -2,16 +2,28 @@
 
 Quiz Phaser : 10 photos (ordre aléatoire), choisir **Héloïse** ou **Adèle**. Il faut **7/10** pour gagner.
 
-## Fichiers à déposer (optionnels : le jeu fonctionne sans, avec des placeholders)
+## Ajouter des photos
 
-- `assets/photos/photo01.jpg` … `photo10.jpg`
-- `assets/sprites/images/menu.png` et `bg.png` (copiés de TheTwinsClash)
-- `assets/audio/music/OmbreFeu.wav` et `SadOmbreFeu.mp3` (copiés de TheTwinsClash)
+Déposer les images (`.jpg`, `.jpeg`, `.png`, `.webp`) dans :
 
-## Bonnes réponses
+- `assets/photos/heloise/` : photos d'Héloïse
+- `assets/photos/adele/` : photos d'Adèle
 
-Éditer `src/data/questions.js` : pour chaque photo, `answer` vaut `'heloise'` ou `'adele'`.
-Les valeurs actuelles sont des exemples à remplacer.
+Le nom du dossier donne la bonne réponse. Puis, depuis la racine du dépôt, régénérer la liste :
+
+```
+node jeux/FaceToFace/scripts/generate-photos.mjs
+```
+
+Cela réécrit `src/data/photos.js` (fichier généré, à ne pas modifier à la main). Les noms de fichiers sont libres.
+
+Texte affiché sous une photo (facultatif) : `assets/photos/descriptions.json`, par ex. `{ "adele/photo01.jpg": "7 mois" }`.
+
+## Autres fichiers
+
+- Images : `assets/sprites/images/` (`menu.jpg`, `bg.jpg`, `bg2.jpg`)
+- Musiques : `assets/audio/music/` (`music_menu.mp3`, `music_game.mp3`, `music_fin.mp3`)
+- Effets : `assets/audio/effect/good` et `bad` ; vidéos de fin : `assets/video/`
 
 ## Lancer
 

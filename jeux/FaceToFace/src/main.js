@@ -2,6 +2,7 @@ import BootScene from './scenes/BootScene.js';
 import PreloadScene from './scenes/PreloadScene.js';
 import MenuScene from './scenes/MenuScene.js';
 import QuizScene from './scenes/QuizScene.js';
+import VideoScene from './scenes/VideoScene.js';
 import ResultScene from './scenes/ResultScene.js';
 
 const config = {
@@ -15,7 +16,7 @@ const config = {
     autoCenter: Phaser.Scale.NO_CENTER
   },
   backgroundColor: '#10121a',
-  scene: [BootScene, PreloadScene, MenuScene, QuizScene, ResultScene]
+  scene: [BootScene, PreloadScene, MenuScene, QuizScene, VideoScene, ResultScene]
 };
 
 function launchGame() {

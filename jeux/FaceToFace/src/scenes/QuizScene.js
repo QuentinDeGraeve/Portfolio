@@ -15,13 +15,13 @@ export default class QuizScene extends Phaser.Scene {
     const w = this.scale.width, h = this.scale.height;
     this.cameras.main.setBackgroundColor('#10121a');
 
-    if (this.cache.audio.exists('bgmMenu') && !this.sound.get('bgmMenu')?.isPlaying) {
+    if (this.cache.audio.exists('bgmGame')) {
       this.sound.stopAll();
-      this.sound.play('bgmMenu', { loop: true, volume: 0.5 });
+      this.sound.play('bgmGame', { loop: true, volume: 0.3 });
     }
 
-    if (this.textures.exists('bg')) {
-      this.add.image(w/2, h/2, 'bg').setDisplaySize(w, h);
+    if (this.textures.exists('bg2')) {
+      this.add.image(w/2, h/2, 'bg2').setDisplaySize(w, h);
     }
 
     // Ordre aléatoire à chaque partie (Fisher-Yates), puis on ne garde que QUESTION_COUNT photos
@@ -36,9 +36,9 @@ export default class QuizScene extends Phaser.Scene {
     this.locked = false;
 
     const textStyle = { fontSize: '22px', fontStyle: 'bold', color: '#ffffff', stroke: '#000000', strokeThickness: 4 };
-    this.questionText = this.add.text(20, 20, '', textStyle);
-    this.scoreText = this.add.text(w - 20, 20, '', textStyle).setOrigin(1, 0);
-    this.descriptionText = this.add.text(w/2, 412, '', { ...textStyle, fontSize: '16px', fontStyle: 'italic', color: '#cccccc', strokeThickness: 3 }).setOrigin(0.5);
+    this.questionText = this.add.text(35, 30, '', textStyle);
+    this.scoreText = this.add.text(w - 35, 30, '', textStyle).setOrigin(1, 0);
+    this.descriptionText = this.add.text(w/2, 412, '', { ...textStyle, fontSize: '22px', fontStyle: 'italic', color: '#cccccc', strokeThickness: 3 }).setOrigin(0.5);
     this.feedbackText = this.add.text(w/2, 437, '', { ...textStyle, fontSize: '20px' }).setOrigin(0.5);
 
     this.photoObjects = [];
@@ -91,6 +91,11 @@ export default class QuizScene extends Phaser.Scene {
     const correct = choiceId === q.answer;
     if (correct) this.score++;
 
+    // Son au hasard parmi ceux chargés pour une bonne / mauvaise réponse
+    const prefix = correct ? 'sfxGood' : 'sfxBad';
+    const sfx = [1, 2, 3].map(n => prefix + n).filter(k => this.cache.audio.exists(k));
+    if (sfx.length) this.sound.play(Phaser.Utils.Array.GetRandom(sfx), { volume: 0.8 });
+
     this.buttons.forEach(b => {
       if (b.id === q.answer) b.rect.setFillStyle(0x44cc66);
       else if (b.id === choiceId) b.rect.setFillStyle(0xff4444);
@@ -103,7 +108,7 @@ export default class QuizScene extends Phaser.Scene {
     this.time.delayedCall(NEXT_DELAY, () => {
       this.index++;
       if (this.index >= this.questions.length) {
-        this.scene.start('Result', { score: this.score, total: this.questions.length });
+        this.scene.start('Video', { score: this.score, total: this.questions.length });
       } else {
         this.showQuestion();
       }
