@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4f2">
+  <script>
+    (function() {
+      var savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.documentElement.style.colorScheme = savedTheme;
+      }
+    })();
+  </script>
+  <meta name="description" content="Étude de cas : Friends 3D — créer des figurines personnalisées style Funko Pop avec une IA locale (ComfyUI, Hunyuan3D) et une imprimante Bambu Lab P2S. Par Quentin De Graeve.">
+  <title>08 — Friends 3D / Quentin De Graeve</title>
+  <script src="../js/head.js"></script>
+  <link rel="stylesheet" href="../css/page-projet.css">
+  <!-- Google tag (gtag.js) -->
+  <script src="../js/analytics.js"></script>
+</head>
+<body>
+<div class="site-root">
+
+  <!-- Nav -->
+  <nav class="page-nav" aria-label="Navigation page projet">
+    <div class="wrap">
+      <a class="page-nav-back" href="../index.html#projets"><span class="arrow">←</span> Retour aux projets</a>
+      <span class="page-nav-brand">Carnet d'ingénierie</span>
+      <div class="page-nav-right">
+        <span class="page-nav-num">Étude 08 / 08</span>
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Changer le thème" title="Changer le thème">
+          <span class="theme-icon-light" aria-hidden="true">☼</span>
+          <span class="theme-icon-dark" aria-hidden="true">☾</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- Hero -->
+    <section class="proj-hero">
+      <div class="wrap proj-hero-inner">
+        <div>
+          <div class="proj-eyebrow"><span class="proj-eyebrow-line"></span> IA locale · Impression 3D · Projet personnel</div>
+          <h1>Friends 3D,<br>de la photo à la <em>figurine.</em></h1>
+          <p class="proj-hero-desc">Créer six figurines personnalisées façon Funko Pop, inspirées de l'univers Friends : l'IA locale transforme des photos en modèles 3D, qu'une imprimante multicolore fabrique ensuite.</p>
+        </div>
+        <div class="proj-meta-block">
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Statut</span>
+            <span class="proj-meta-value">En cours · workflow IA à finaliser</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Matériel</span>
+            <span class="proj-meta-value">Bambu Lab P2S + AMS · RTX 4070 Ti Super</span>
+          </div>
+          <div class="proj-meta-item">
+            <span class="proj-meta-label">Technologies</span>
+            <div class="proj-tags">
+              <span class="proj-tag">ComfyUI</span>
+              <span class="proj-tag">Hunyuan3D 2.1</span>
+              <span class="proj-tag">Bambu Studio</span>
+              <span class="proj-tag">STL</span>
+              <span class="proj-tag">PLA / PETG</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Corps -->
+    <div class="proj-body">
+      <div class="wrap proj-body-grid">
+
+        <aside class="proj-sidebar">
+          <nav aria-label="Sections de l'étude">
+            <p class="proj-sidebar-title">Sommaire</p>
+            <a href="#projet">Le projet</a>
+            <a href="#materiel">Matériel</a>
+            <a href="#ia">IA et génération 3D</a>
+            <a href="#captures">Captures</a>
+            <a href="#direction">Direction artistique</a>
+            <a href="#impression">Impression</a>
+            <a href="#demo">Timelapse</a>
+            <a href="#conclusion">Conclusion</a>
+          </nav>
+        </aside>
+
+        <article class="proj-content">
+          <span class="proj-status">Projet personnel en cours</span>
+
+          <h2 id="projet">Le projet</h2>
+          <p>L'objectif est de créer une collection de <strong>six figurines personnalisées</strong> dans l'univers Friends, au style Funko Pop : grosses têtes, corps simplifiés, expressions reconnaissables.</p>
+          <p>La scène finale réunit les six personnages debout, un canapé orange emblématique, une table basse et un socle commun.</p>
+
+          <h2 id="materiel">Matériel et outils</h2>
+          <ul>
+            <li><strong>Bambu Lab P2S</strong> — impression FDM multicolore avec AMS, en PLA et PETG.</li>
+            <li><strong>NVIDIA RTX 4070 Ti Super</strong> — exécute les modèles d'IA en local, sans dépendre de services cloud payants.</li>
+            <li><strong>ComfyUI</strong> — workflows en nœuds pour styliser les photos et préparer les images de référence.</li>
+            <li><strong>Bambu Studio</strong> — import des STL, orientation, supports, hauteur de couche et attribution des couleurs.</li>
+          </ul>
+
+          <h2 id="ia">IA et génération 3D</h2>
+          <p>Le workflow vise à passer d'une photographie à un modèle imprimable :</p>
+          <ol>
+            <li>Importer la photo de chaque personne.</li>
+            <li>La transformer en personnage stylisé façon Funko Pop.</li>
+            <li>Générer le modèle 3D à partir de l'image.</li>
+            <li>Corriger le maillage et vérifier sa qualité.</li>
+            <li>Exporter en STL et préparer l'impression.</li>
+          </ol>
+          <p>Pour la génération 3D, <strong>Hunyuan3D 2.1</strong> tourne en local dans ComfyUI (nœud « Image to 3D », sortie SaveGLB). Tripo AI et Meshy restent des alternatives cloud si la qualité locale ne suffit pas. La priorité est donnée aux solutions locales et gratuites.</p>
+
+          <h2 id="captures">Captures</h2>
+          <div class="proj-gallery">
+            <figure>
+              <img src="../images/Friends/figurines.jpg" alt="Six figurines style Funko Pop de Friends assises sur un canapé orange" loading="lazy">
+              <figcaption>Référence visuelle : le rendu recherché</figcaption>
+            </figure>
+            <figure>
+              <img src="../images/Friends/comfyui-hunyuan3d.png" alt="Workflow ComfyUI : une image de figurine est convertie en modèle 3D par Hunyuan3D 2.1" loading="lazy">
+              <figcaption>ComfyUI — Hunyuan3D 2.1 : image vers 3D</figcaption>
+            </figure>
+            <figure>
+              <img src="../images/Friends/bambu-studio.png" alt="Bambu Studio avec plusieurs plateaux contenant chacun une figurine, et neuf filaments configurés" loading="lazy">
+              <figcaption>Bambu Studio — un plateau par figurine</figcaption>
+            </figure>
+          </div>
+
+          <h2 id="direction">Direction artistique</h2>
+          <ul>
+            <li>Six personnages personnalisés, debout, avec têtes surdimensionnées.</li>
+            <li>Vêtements et accessoires personnalisés (casquette, lunettes, cheveux).</li>
+            <li>Décor Friends : canapé orange, table basse, socle commun.</li>
+            <li>Palette réduite pour simplifier l'AMS, limiter les coûts et garder une cohérence visuelle.</li>
+          </ul>
+
+          <h2 id="impression">Impression et finition</h2>
+          <p>Les figurines sont imprimées <strong>individuellement</strong>, une par plateau, pour réduire les risques d'échec et pouvoir remplacer une pièce. Une attention particulière est portée au visage, aux cheveux, aux lunettes et aux surfaces supérieures.</p>
+          <p>La finition prévoit le retrait des supports, le ponçage, un apprêt éventuel, la peinture acrylique puis l'assemblage du décor.</p>
+
+          <h2 id="demo">Timelapse d'une figurine</h2>
+          <div class="proj-video">
+            <video src="../images/Friends/demo.mp4" controls preload="metadata" playsinline style="position:absolute;inset:0;width:100%;height:100%"></video>
+          </div>
+          <p>Timelapse de la création d'une figurine.</p>
+
+          <h2 id="conclusion">Conclusion</h2>
+          <p>Le projet Friends 3D est une expérience de création combinant intelligence artificielle locale et fabrication additive.</p>
+          <p>L'ambition est de passer d'une simple photographie à une figurine physique personnalisée, en maîtrisant toute la chaîne de production : de la génération IA jusqu'à l'impression et la finition.</p>
+          <p><strong>Le résultat attendu : une collection de six figurines uniques, fabriquées à la maison, avec un décor inspiré de Friends.</strong></p>
+
+
+        </article>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span><strong>QD/</strong> — Quentin De Graeve</span>
+      <span>Étude 08 / Friends 3D</span>
+      <a class="back-top" href="../index.html#projets">← Tous les projets</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  (function() {
+    var themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', function () {
+        var currentTheme = document.documentElement.style.colorScheme || 'light dark';
+        var activeTheme;
+        if (currentTheme === 'light') {
+          activeTheme = 'light';
+        } else if (currentTheme === 'dark') {
+          activeTheme = 'dark';
+        } else {
+          activeTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        var nextTheme = activeTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.style.colorScheme = nextTheme;
+        localStorage.setItem('theme', nextTheme);
+      });
+    }
+  })();
+</script>
+</body>
+</html>

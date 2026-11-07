@@ -17,7 +17,8 @@
     'projets/projet-04-space-dodge.html',
     'projets/projet-05-lander.html',
     'projets/projet-06-twin-clash.html',
-    'projets/projet-07-face-to-face.html'
+    'projets/projet-07-face-to-face.html',
+    'projets/projet-08-friends-3d.html'
   ];
 
   var grid = document.getElementById('projectGrid');
